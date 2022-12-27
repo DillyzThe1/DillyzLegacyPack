@@ -1,0 +1,4 @@
+.vs\*
+DillyzLegacyPack/obj/*
+DillyzLegacyPack/bin/*
+.vs/**/*
