@@ -31,12 +31,12 @@ namespace DillyzLegacyPack
 
             assembly = Assembly.GetExecutingAssembly();
 
-            #region Phoenix
+            #region phoenix
             // normal Phoenix
             CustomRole phoenix = DillyzUtil.createRole("Phoenix", "Reveal your hidden power.", true, false, new Color32(225, 65, 25, 255), false,
                 CustomRoleSide.Crewmate, VentPrivilege.None, false, true);
             phoenix.a_or_an = "a";
-            phoenix.SetSprite(assembly, "ClassicRolePackage.Assets.dillyzthe1.png");
+            phoenix.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
 
             // ghost Phoenix
             CustomRole phoenixghost = DillyzUtil.createRole("Phoenix Ghost", "Come back to play.", true, false, new Color32(245, 100, 85, 255), false,
@@ -57,7 +57,7 @@ namespace DillyzLegacyPack
             CustomRole sensei = DillyzUtil.createRole("Sensei", "Slice through suspects to victory.", true, false, new Color32(125, 45, 200, 255), false,
                 CustomRoleSide.Crewmate, VentPrivilege.None, false, true);
             sensei.a_or_an = "a";
-            sensei.SetSprite(assembly, "ClassicRolePackage.Assets.dillyzthe1.png");
+            sensei.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
             #endregion
 
             #region time freeze button
