@@ -67,10 +67,40 @@ namespace DillyzLegacyPack
 
                     PlayerControl.LocalPlayer.Revive();
                     DillyzUtil.RpcSetRole(PlayerControl.LocalPlayer, "Phoenix Zero");
+                    byte randomness = 0;
 
+                    switch (ShipStatus.Instance.name.ToLower().Replace("(clone)","")) {
+                        case "skeldship":
+                            PlayerControl.LocalPlayer.transform.position = new Vector3(-7.25f, -4.85f, 0f);
+                            break;
+                        case "miraship":
+                            PlayerControl.LocalPlayer.transform.position = new Vector3(-16.25f, -0.5f, 0f);
+                            break;
+                        case "polusship":
+                            PlayerControl.LocalPlayer.transform.position = new Vector3(40.375f, -6.75f, 0f);
+                            break;
+                        case "airship":
+                            randomness = (byte)UnityEngine.Random.Range(0, 3);
+                            switch (randomness) {
+                                case (byte)0:
+                                    PlayerControl.LocalPlayer.transform.position = new Vector3(29.25f, 7.25f, 0f);
+                                    break;
+                                case (byte)1:
+                                    PlayerControl.LocalPlayer.transform.position = new Vector3(30.8f, 7.25f, 0f);
+                                    break;
+                                case (byte)2:
+                                    PlayerControl.LocalPlayer.transform.position = new Vector3(32.35f, 7.25f, 0f);
+                                    break;
+                                case (byte)3:
+                                    PlayerControl.LocalPlayer.transform.position = new Vector3(33.75f, 7.25f, 0f);
+                                    break;
+                            }
+                            break;
+                    }
 
-                    DillyzUtil.InvokeRPCCall("Revive", delegate(MessageWriter writer) {
+                    DillyzUtil.InvokeRPCCall("SecondChance", delegate (MessageWriter writer) {
                         writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                        writer.Write(randomness);
                     });
                 }
             );
@@ -96,8 +126,40 @@ namespace DillyzLegacyPack
             #endregion
 
             #region rpc
-            DillyzUtil.AddRpcCall("Revive", delegate(MessageReader reader) {
+            DillyzUtil.AddRpcCall("SecondChance", delegate(MessageReader reader) {
                 DillyzUtil.findPlayerControl(reader.ReadByte()).Revive();
+                int randomness = reader.ReadByte();
+
+                switch (ShipStatus.Instance.name.ToLower().Replace("(clone)", ""))
+                {
+                    case "skeldship":
+                        PlayerControl.LocalPlayer.transform.position = new Vector3(-7.25f, -4.85f, 0f);
+                        break;
+                    case "miraship":
+                        PlayerControl.LocalPlayer.transform.position = new Vector3(-16.25f, -0.5f, 0f);
+                        break;
+                    case "polusship":
+                        PlayerControl.LocalPlayer.transform.position = new Vector3(40.375f, -6.75f, 0f);
+                        break;
+                    case "airship":
+                        randomness = UnityEngine.Random.Range(0, 3);
+                        switch (randomness)
+                        {
+                            case (byte)0:
+                                PlayerControl.LocalPlayer.transform.position = new Vector3(29.25f, 7.25f, 0f);
+                                break;
+                            case (byte)1:
+                                PlayerControl.LocalPlayer.transform.position = new Vector3(30.8f, 7.25f, 0f);
+                                break;
+                            case (byte)2:
+                                PlayerControl.LocalPlayer.transform.position = new Vector3(32.35f, 7.25f, 0f);
+                                break;
+                            case (byte)3:
+                                PlayerControl.LocalPlayer.transform.position = new Vector3(33.75f, 7.25f, 0f);
+                                break;
+                        }
+                        break;
+                }
             });
             #endregion
         }
