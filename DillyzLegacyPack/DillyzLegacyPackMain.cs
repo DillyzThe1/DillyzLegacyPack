@@ -8,6 +8,7 @@ using BepInEx;
 using BepInEx.IL2CPP;
 using DillyzRoleApi_Rewritten;
 using HarmonyLib;
+using Hazel;
 using UnityEngine;
 
 namespace DillyzLegacyPack
@@ -44,7 +45,7 @@ namespace DillyzLegacyPack
                 {
                     if (!success)
                         return;
-
+                    
                     DillyzUtil.RpcCommitAssassination(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer);
                 }
             );
@@ -57,6 +58,23 @@ namespace DillyzLegacyPack
             phoenixghost.roleSeleciton = false;
             phoenixghost.hasSettings = false;
             phoenixghost.ghostRole = true;
+
+            CustomButton secondchance = DillyzUtil.addButton(assembly, "Second Chance", "DillyzLegacyPack.Assets.dillyzthe1.png", 20f, false, new string[] { "Phoenix's Ghost" }, new string[] { },
+                delegate (KillButtonCustomData button, bool success)
+                {
+                    if (!success)
+                        return;
+
+                    PlayerControl.LocalPlayer.Revive();
+                    DillyzUtil.RpcSetRole(PlayerControl.LocalPlayer, "Phoenix Zero");
+
+
+                    DillyzUtil.InvokeRPCCall("Revive", delegate(MessageWriter writer) {
+                        writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    });
+                }
+            );
+            secondchance.textOutlineColor = phoenixghost.roleColor;
 
             // afterlife Phoenix
             CustomRole phoenixzero = DillyzUtil.createRole("Phoenix Zero", "Use the power of the afterlife.", true, false, new Color32(240, 85, 40, 255), false,
@@ -75,6 +93,12 @@ namespace DillyzLegacyPack
 
             #region time freeze button
             // todo
+            #endregion
+
+            #region rpc
+            DillyzUtil.AddRpcCall("Revive", delegate(MessageReader reader) {
+                DillyzUtil.findPlayerControl(reader.ReadByte()).Revive();
+            });
             #endregion
         }
     }
