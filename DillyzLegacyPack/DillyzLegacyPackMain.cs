@@ -37,6 +37,18 @@ namespace DillyzLegacyPack
                 CustomRoleSide.Crewmate, VentPrivilege.None, false, true);
             phoenix.a_or_an = "a";
             phoenix.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
+            phoenix.roletoGhostInto = "Phoenix's Ghost";
+
+            CustomButton advice = DillyzUtil.addButton(assembly, "Take Advice", "DillyzLegacyPack.Assets.dillyzthe1.png", 0.1f, false, new string[] { "Phoenix" }, new string[] { }, 
+                delegate(KillButtonCustomData button, bool success)
+                {
+                    if (!success)
+                        return;
+
+                    DillyzUtil.RpcCommitAssassination(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer);
+                }
+            );
+            advice.textOutlineColor = phoenix.roleColor;
 
             // ghost Phoenix
             CustomRole phoenixghost = DillyzUtil.createRole("Phoenix's Ghost", "Come back to play.", true, false, new Color32(245, 100, 85, 255), false,
