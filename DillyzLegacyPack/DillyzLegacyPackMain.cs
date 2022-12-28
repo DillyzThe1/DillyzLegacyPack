@@ -74,7 +74,7 @@ namespace DillyzLegacyPack
                             PlayerControl.LocalPlayer.transform.position = new Vector3(-7.25f, -4.85f, 0f);
                             break;
                         case "miraship":
-                            PlayerControl.LocalPlayer.transform.position = new Vector3(-16.25f, -0.5f, 0f);
+                            PlayerControl.LocalPlayer.transform.position = new Vector3(16.25f, 0.5f, 0f);
                             break;
                         case "polusship":
                             PlayerControl.LocalPlayer.transform.position = new Vector3(40.375f, -6.75f, 0f);
@@ -107,7 +107,7 @@ namespace DillyzLegacyPack
             secondchance.textOutlineColor = phoenixghost.roleColor;
 
             // afterlife Phoenix
-            CustomRole phoenixzero = DillyzUtil.createRole("Phoenix Zero", "Use the power of the afterlife.", true, false, new Color32(240, 85, 40, 255), false,
+            CustomRole phoenixzero = DillyzUtil.createRole("Phoenix Zero", "Use the power of the afterlife.", true, true, new Color32(240, 85, 40, 255), false,
                 CustomRoleSide.Crewmate, VentPrivilege.None, false, true);
             phoenixzero.a_or_an = "a";
             phoenixzero.roleSeleciton = false;
@@ -136,7 +136,7 @@ namespace DillyzLegacyPack
                         PlayerControl.LocalPlayer.transform.position = new Vector3(-7.25f, -4.85f, 0f);
                         break;
                     case "miraship":
-                        PlayerControl.LocalPlayer.transform.position = new Vector3(-16.25f, -0.5f, 0f);
+                        PlayerControl.LocalPlayer.transform.position = new Vector3(16.25f, 0.5f, 0f);
                         break;
                     case "polusship":
                         PlayerControl.LocalPlayer.transform.position = new Vector3(40.375f, -6.75f, 0f);
