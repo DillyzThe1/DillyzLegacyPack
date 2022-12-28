@@ -10,7 +10,7 @@ namespace DillyzLegacyPack
         public static void Postfix(DillyzUtil __instance, PlayerControl assassinator, PlayerControl target) {
             if (target.PlayerId == nextPheonixGhostId)
             {
-                CustomRole.setRoleName(nextPheonixGhostId, "Pheonix Ghost");
+                CustomRole.setRoleName(nextPheonixGhostId, "Phoenix's Ghost");
                 nextPheonixGhostId = 255;
             }
         }

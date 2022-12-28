@@ -7,7 +7,7 @@ namespace DillyzLegacyPack
     class GameManagerPatch
     {
         public static bool Prefix(GameManager __instance, PlayerControl player, bool assignGhostRole) {
-            if (CustomRole.getRoleName(player.PlayerId) == "Pheonix")
+            if (CustomRole.getRoleName(player.PlayerId) == "Phoenix")
             {
                 DillyzUtilPatch.nextPheonixGhostId = player.PlayerId;
                 return false;

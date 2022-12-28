@@ -39,11 +39,12 @@ namespace DillyzLegacyPack
             phoenix.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
 
             // ghost Phoenix
-            CustomRole phoenixghost = DillyzUtil.createRole("Phoenix Ghost", "Come back to play.", true, false, new Color32(245, 100, 85, 255), false,
+            CustomRole phoenixghost = DillyzUtil.createRole("Phoenix's Ghost", "Come back to play.", true, false, new Color32(245, 100, 85, 255), false,
                 CustomRoleSide.Crewmate, VentPrivilege.None, false, true);
             phoenixghost.a_or_an = "a";
             phoenixghost.roleSeleciton = false;
             phoenixghost.hasSettings = false;
+            phoenixghost.ghostRole = true;
 
             // afterlife Phoenix
             CustomRole phoenixzero = DillyzUtil.createRole("Phoenix Zero", "Use the power of the afterlife.", true, false, new Color32(240, 85, 40, 255), false,
