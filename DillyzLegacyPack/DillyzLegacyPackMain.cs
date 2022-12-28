@@ -59,7 +59,7 @@ namespace DillyzLegacyPack
             phoenixghost.hasSettings = false;
             phoenixghost.ghostRole = true;
 
-            CustomButton secondchance = DillyzUtil.addButton(assembly, "Second Chance", "DillyzLegacyPack.Assets.dillyzthe1.png", 20f, false, new string[] { "Phoenix's Ghost" }, new string[] { },
+            CustomButton secondchance = DillyzUtil.addButton(assembly, "2nd Chance", "DillyzLegacyPack.Assets.dillyzthe1.png", 20f, false, new string[] { "Phoenix's Ghost" }, new string[] { },
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
