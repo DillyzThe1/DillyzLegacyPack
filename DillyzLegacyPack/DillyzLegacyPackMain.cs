@@ -142,7 +142,7 @@ namespace DillyzLegacyPack
             CustomRole sensei = DillyzUtil.createRole("Sensei", "Slice through suspects to victory.", true, false, new Color32(125, 45, 200, 255), false,
                 CustomRoleSide.Crewmate, VentPrivilege.None, false, true);
             sensei.a_or_an = "a";
-            sensei.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
+            sensei.SetSprite(assembly, "DillyzLegacyPack.Assets.sensei.png");
 
             CustomButton sword = null;
             sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.dillyzthe1.png", 2.5f, false, new string[] { "Sensei" }, empty,
