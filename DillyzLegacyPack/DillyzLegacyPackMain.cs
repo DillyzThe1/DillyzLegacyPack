@@ -48,7 +48,7 @@ namespace DillyzLegacyPack
             phoenix.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
             phoenix.roletoGhostInto = "Phoenix's Ghost";
 
-            CustomButton advice = DillyzUtil.addButton(assembly, "Take Advice", "DillyzLegacyPack.Assets.dillyzthe1.png", 0f, false, new string[] { "Phoenix" }, empty, 
+            CustomButton advice = DillyzUtil.addButton(assembly, "Take Advice", "DillyzLegacyPack.Assets.dillyzthe1.png", 60f, false, new string[] { "Phoenix" }, empty, 
                 delegate(KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -75,7 +75,6 @@ namespace DillyzLegacyPack
                         return;
 
                     SecondChance(PlayerControl.LocalPlayer, true);
-                    DillyzUtil.RpcSetRole(PlayerControl.LocalPlayer, "Phoenix Zero");
                 }
             );
             secondchance.textOutlineColor = phoenixghost.roleColor;
@@ -223,7 +222,6 @@ namespace DillyzLegacyPack
 
             if (!rpc)
                 return;
-            DillyzUtil.RpcSetRole(player, "");
             DillyzUtil.InvokeRPCCall("SecondChance", delegate (MessageWriter writer) {
                 writer.Write(player.PlayerId);
                 writer.Write(randomness);
