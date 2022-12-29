@@ -11,10 +11,20 @@ using UnityEngine;
 namespace DillyzLegacyPack
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    [HarmonyPriority(5)] // low
+    [HarmonyPriority(Priority.LowerThanNormal)] // low
     class HudManagerPatch
     {
         public static void Postfix(HudManager __instance) {
+
+            if (DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "TiMEpostor")
+            {
+                __instance.SabotageButton.gameObject.SetActive(false);
+                __instance.SabotageButton.SetDisabled();
+                __instance.SabotageButton.transform.parent = __instance.KillButton.transform.parent.parent;
+            }
+            else if (__instance.SabotageButton.transform.parent != __instance.KillButton.transform.parent)
+                __instance.SabotageButton.transform.parent = __instance.KillButton.transform.parent;
+
             foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
                 if (!DillyzLegacyPackMain.namesPublic.Contains(player.PlayerId))
                     continue;

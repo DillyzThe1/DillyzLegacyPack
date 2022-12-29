@@ -30,7 +30,7 @@ namespace DillyzLegacyPack
         #region settings
         public static string chanceMode = "Death";
         public static string wrathDisables = "Crewmate Kill";
-        public static string communicateDisables = "Any Revive";
+        public static string communicateDisables = "Revived Any";
 
         public static float timeReversed = 10f;
         #endregion

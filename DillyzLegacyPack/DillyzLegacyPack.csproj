@@ -45,6 +45,7 @@
     <Compile Include="DillyzUtilPatch.cs" />
     <Compile Include="GameManagerPatch.cs" />
     <Compile Include="HudManagerPatch.cs" />
+    <Compile Include="MapBehaviourPatch.cs" />
     <Compile Include="PlayerControlPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
