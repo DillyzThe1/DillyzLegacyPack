@@ -199,11 +199,11 @@ namespace DillyzLegacyPack
 
             #region settings
             //phoenix.AddAdvancedSetting_Boolean("Suicide Button", false, delegate (bool v) { advice.allowedRoles.Clear(); if (v) advice.allowedRoles.Add(phoenix.name); });
-            phoenix.AddAdvancedSetting_String("2nd Chance Allowed", chanceMode, new string[] { "Tasks Done", "Death", "Meeting Over", "Exile Only", "Kill Only" }, delegate (string v) { chanceMode = v; });
+            //phoenix.AddAdvancedSetting_String("2nd Chance Allowed", chanceMode, new string[] { "Tasks Done", "Death", "Meeting Over", "Exile Only", "Kill Only" }, delegate (string v) { chanceMode = v; });
             phoenix.AddAdvancedSetting_Float("Wrath Cooldown", 15, 5, 75, 5, delegate (float v) { wrath.cooldown = v; }).suffix = "s";
-            //phoenix.AddAdvancedSetting_String("Wrath Disabled On", wrathDisables, new string[] { "Any Kill", "Impostor Kill", "Crewmate Kill", "Other Kill", "None"}, delegate(string v) { wrathDisables = v; });
+            phoenix.AddAdvancedSetting_String("Wrath Disabled On", wrathDisables, new string[] { "Any Kill", "Impostor Kill", "Crewmate Kill", "Other Kill", "None"}, delegate(string v) { wrathDisables = v; });
             phoenix.AddAdvancedSetting_Float("Comm. Cooldown", 35, 5, 100, 5, delegate(float v) { communicate.cooldown = v; }).suffix = "s";
-            //phoenix.AddAdvancedSetting_String("Comm. Disabled On", communicateDisables, new string[] { "Revived Any", "Revived Impostor", "Revived Crewmate", "Revive Other", "None"}, delegate(string v) { communicateDisables = v; });
+            phoenix.AddAdvancedSetting_String("Comm. Disabled On", communicateDisables, new string[] { "Revived Any", "Revived Impostor", "Revived Crewmate", "Revive Other", "None"}, delegate(string v) { communicateDisables = v; });
             phoenix.AddAdvancedSetting_Float("Reveal Cooldown", 60, 10, 115, 5, delegate(float v) { reveal.cooldown = v; }).suffix = "s";
             phoenix.AddAdvancedSetting_Float("Reveal Timer", 10, 5, 40, 2.5f, delegate(float v) { reveal.useTime = v; });
             #endregion
