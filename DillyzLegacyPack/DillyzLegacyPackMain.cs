@@ -31,6 +31,8 @@ namespace DillyzLegacyPack
         public static string chanceMode = "Death";
         public static string wrathDisables = "Crewmate Kill";
         public static string communicateDisables = "Any Revive";
+
+        public static float timeReversed = 10f;
         #endregion
 
 
@@ -167,11 +169,40 @@ namespace DillyzLegacyPack
                 }
             );
             sword.buttonText = "Reveal";
-            sword.textOutlineColor = phoenix.roleColor;
+            sword.textOutlineColor = sensei.roleColor;
             #endregion
 
             #region time freeze button
-            // todo
+            // alt color : new Color32(100, 150, 255, 255)
+            CustomRole timepostor = DillyzUtil.createRole("TiMEpostor", "Minipulate the time line.", true, false, new Color32(85, 50, 225, 255), true,
+                CustomRoleSide.Impostor, VentPrivilege.Impostor, true, true);
+            timepostor.a_or_an = "a";
+            timepostor.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
+
+            CustomButton freezetime = DillyzUtil.addButton(assembly, "Freeze Time", "DillyzLegacyPack.Assets.dillyzthe1.png", 2.5f, false, new string[] { "TiMEpostor" }, empty,
+                delegate (KillButtonCustomData button, bool success)
+                {
+                    if (!success)
+                        return;
+
+                    Log.LogInfo("Freeze time.");
+                }
+            );
+            freezetime.textOutlineColor = timepostor.roleColor;
+            freezetime.SetUseTimeButton(17.5f, delegate (KillButtonCustomData button, bool interrupted) {
+                Log.LogInfo("Continue time.");
+            });
+
+            CustomButton reversetime = DillyzUtil.addButton(assembly, "Reverse Time", "DillyzLegacyPack.Assets.dillyzthe1.png", 2.5f, false, new string[] { "TiMEpostor" }, empty,
+                delegate (KillButtonCustomData button, bool success)
+                {
+                    if (!success)
+                        return;
+
+                    Log.LogInfo("Reverse time for " + timeReversed + "s.");
+                }
+            );
+            reversetime.textOutlineColor = timepostor.roleColor;
             #endregion
 
             #region rpc
@@ -198,6 +229,7 @@ namespace DillyzLegacyPack
             #endregion
 
             #region settings
+            // -- Phoenix --
             //phoenix.AddAdvancedSetting_Boolean("Suicide Button", false, delegate (bool v) { advice.allowedRoles.Clear(); if (v) advice.allowedRoles.Add(phoenix.name); });
             //phoenix.AddAdvancedSetting_String("2nd Chance Allowed", chanceMode, new string[] { "Tasks Done", "Death", "Meeting Over", "Exile Only", "Kill Only" }, delegate (string v) { chanceMode = v; });
             phoenix.AddAdvancedSetting_Float("Wrath Cooldown", 15, 5, 75, 5, delegate (float v) { wrath.cooldown = v; }).suffix = "s";
@@ -205,7 +237,15 @@ namespace DillyzLegacyPack
             phoenix.AddAdvancedSetting_Float("Comm. Cooldown", 35, 5, 100, 5, delegate(float v) { communicate.cooldown = v; }).suffix = "s";
             phoenix.AddAdvancedSetting_String("Comm. Disabled On", communicateDisables, new string[] { "Revived Any", "Revived Impostor", "Revived Crewmate", "Revive Other", "None"}, delegate(string v) { communicateDisables = v; });
             phoenix.AddAdvancedSetting_Float("Reveal Cooldown", 60, 10, 115, 5, delegate(float v) { reveal.cooldown = v; }).suffix = "s";
-            phoenix.AddAdvancedSetting_Float("Reveal Timer", 10, 5, 40, 2.5f, delegate(float v) { reveal.useTime = v; });
+            phoenix.AddAdvancedSetting_Float("Reveal Timer", 10, 5, 40, 2.5f, delegate (float v) { reveal.useTime = v; }).suffix = "s";
+
+            // -- TiMEpostor --
+            timepostor.AddAdvancedSetting_Boolean("Time Freezing", true, delegate (bool v) { freezetime.allowedRoles.Clear(); if (v) freezetime.allowedRoles.Add(timepostor.name); });
+            timepostor.AddAdvancedSetting_Float("Freezing Cooldown", 35, 5, 75, 5, delegate(float v) { freezetime.cooldown = v; }).suffix = "s";
+            timepostor.AddAdvancedSetting_Float("Frozen Duration", 17.5f, 7.5f, 30f, 2.5f, delegate (float v) { freezetime.useTime = v; }).suffix = "s";
+            timepostor.AddAdvancedSetting_Boolean("Time Reversal", true, delegate(bool v) { reversetime.allowedRoles.Clear(); if (v) reversetime.allowedRoles.Add(timepostor.name); });
+            timepostor.AddAdvancedSetting_Float("Revering Cooldown", 40, 5, 85, 5, delegate (float v) { reversetime.cooldown = v; }).suffix = "s";
+            timepostor.AddAdvancedSetting_Float("Reversal Duration", 10f, 5f, 25f, 2.5f, delegate (float v) { timeReversed = v; }).suffix = "s";
             #endregion
         }
 
