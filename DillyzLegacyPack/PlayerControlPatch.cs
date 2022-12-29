@@ -14,7 +14,16 @@ namespace DillyzLegacyPack
         class PlayerControlPatch_OnEndGame {
             public static void Postfix(PlayerControl __instance) {
                 DillyzLegacyPackMain.senseiSwordOut = false;
-                DillyzLegacyPackMain.phoenixzero.nameColorPublic = false;
+                DillyzLegacyPackMain.namesPublic.Clear();
+            }
+        }
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Revive))]
+        class PlayerControlPatch_Revive
+        {
+            public static void Postfix(PlayerControl __instance)
+            {
+                if (AmongUsClient.Instance.AmHost && DillyzUtil.getRoleName(__instance) == "Phoenix's Ghost")
+                    DillyzUtil.RpcSetRole(__instance, "Phoenix Zero");
             }
         }
     }
