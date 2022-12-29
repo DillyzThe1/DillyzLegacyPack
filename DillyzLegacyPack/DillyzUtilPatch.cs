@@ -13,6 +13,9 @@ namespace DillyzLegacyPack
                 CustomRole.setRoleName(nextPheonixGhostId, "Phoenix's Ghost");
                 nextPheonixGhostId = 255;
             }
+
+            KillAnimation.SetMovement(assassinator, !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(assassinator) != "TiMEpostor"));
+            KillAnimation.SetMovement(target, !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(target) != "TiMEpostor"));
         }
     }
 }

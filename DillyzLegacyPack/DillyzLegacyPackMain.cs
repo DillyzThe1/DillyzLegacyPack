@@ -11,6 +11,7 @@ using HarmonyLib;
 using Hazel;
 using Iced.Intel;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace DillyzLegacyPack
 {
@@ -322,13 +323,17 @@ namespace DillyzLegacyPack
         {
             timeFrozen = frozen;
             PlayerControl player = PlayerControl.LocalPlayer;
-            if (DillyzUtil.roleSide(player) != CustomRoleSide.Impostor)
+            if (DillyzUtil.getRoleName(player) != "TiMEpostor")
             {
                 foreach (CustomButton button in CustomButton.AllCustomButtons)
                     button.GameInstance.blockingButton = timeFrozen;
+
+                KillAnimation.SetMovement(player, !timeFrozen);
             }
             if (reversetime.GameInstance != null)
                 reversetime.GameInstance.blockingButton = timeFrozen;
+
+
         }
     }
 }

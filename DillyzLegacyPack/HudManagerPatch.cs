@@ -40,7 +40,6 @@ namespace DillyzLegacyPack
                     __instance.KillButton?.SetTarget(null);
                     __instance.ImpostorVentButton?.SetDisabled();
                     __instance.ImpostorVentButton?.SetTarget(null);
-                    PlayerControl.LocalPlayer.MyPhysics.inputHandler.enabled = false;
                 }
             }
 
