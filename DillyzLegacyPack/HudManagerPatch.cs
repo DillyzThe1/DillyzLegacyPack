@@ -25,6 +25,25 @@ namespace DillyzLegacyPack
             else if (__instance.SabotageButton.transform.parent != __instance.KillButton.transform.parent)
                 __instance.SabotageButton.transform.parent = __instance.KillButton.transform.parent;
 
+            if (DillyzLegacyPackMain.timeFrozen)
+            {
+                __instance.ReportButton?.SetDisabled();
+                __instance.PetButton?.SetDisabled();
+                __instance.UseButton?.SetDisabled();
+                __instance.UseButton?.SetTarget(null);
+                __instance.AdminButton?.SetDisabled();
+
+                if (DillyzUtil.getRoleName(PlayerControl.LocalPlayer) != "TiMEpostor")
+                {
+                    __instance.AbilityButton?.SetDisabled();
+                    __instance.KillButton?.SetDisabled();
+                    __instance.KillButton?.SetTarget(null);
+                    __instance.ImpostorVentButton?.SetDisabled();
+                    __instance.ImpostorVentButton?.SetTarget(null);
+                    PlayerControl.LocalPlayer.MyPhysics.inputHandler.enabled = false;
+                }
+            }
+
             foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
                 if (!DillyzLegacyPackMain.namesPublic.Contains(player.PlayerId))
                     continue;

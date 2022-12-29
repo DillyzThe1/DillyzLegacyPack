@@ -26,6 +26,10 @@ namespace DillyzLegacyPack
 
         public static CustomRole phoenixzero;
         public static bool senseiSwordOut = false;
+        public static bool timeFrozen = false;
+        public static CustomButton freezetime;
+        public static CustomButton reversetime;
+        public static bool causedTimeEvent = false;
 
         #region settings
         public static string chanceMode = "Death";
@@ -172,28 +176,36 @@ namespace DillyzLegacyPack
             sword.textOutlineColor = sensei.roleColor;
             #endregion
 
-            #region time freeze button
+            #region timepostor
             // alt color : new Color32(100, 150, 255, 255)
             CustomRole timepostor = DillyzUtil.createRole("TiMEpostor", "Minipulate the time line.", true, false, new Color32(85, 50, 225, 255), true,
                 CustomRoleSide.Impostor, VentPrivilege.Impostor, true, true);
             timepostor.a_or_an = "a";
             timepostor.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
 
-            CustomButton freezetime = DillyzUtil.addButton(assembly, "Freeze Time", "DillyzLegacyPack.Assets.dillyzthe1.png", 2.5f, false, new string[] { "TiMEpostor" }, empty,
+            freezetime = DillyzUtil.addButton(assembly, "Freeze Time", "DillyzLegacyPack.Assets.dillyzthe1.png", 35f, false, new string[] { "TiMEpostor" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
                         return;
 
+                    causedTimeEvent = true;
                     Log.LogInfo("Freeze time.");
+                    FreezeTime(true);
+                    DillyzUtil.InvokeRPCCall("time_freeze", delegate (MessageWriter writer) { writer.Write(true); });
                 }
             );
             freezetime.textOutlineColor = timepostor.roleColor;
             freezetime.SetUseTimeButton(17.5f, delegate (KillButtonCustomData button, bool interrupted) {
-                Log.LogInfo("Continue time.");
+                if (causedTimeEvent)
+                {
+                    Log.LogInfo("Continue time.");
+                    FreezeTime(false);
+                    DillyzUtil.InvokeRPCCall("time_freeze", delegate (MessageWriter writer) { writer.Write(false); });
+                }
             });
 
-            CustomButton reversetime = DillyzUtil.addButton(assembly, "Reverse Time", "DillyzLegacyPack.Assets.dillyzthe1.png", 2.5f, false, new string[] { "TiMEpostor" }, empty,
+            reversetime = DillyzUtil.addButton(assembly, "Reverse Time", "DillyzLegacyPack.Assets.dillyzthe1.png", 40f, false, new string[] { "TiMEpostor" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -225,6 +237,20 @@ namespace DillyzLegacyPack
 
                 //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Outline", phoenixzero.nameColorPublic ? 2f : 0f);
                 //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", DillyzUtil.color32ToColor(phoenixzero.roleColor));
+            });
+            DillyzUtil.AddRpcCall("time_freeze", delegate(MessageReader reader) {
+                bool active = reader.ReadBoolean();
+                FreezeTime(active);
+
+                if (DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "TiMEpostor" && freezetime.GameInstance != null)
+                {
+                    freezetime.GameInstance.lastUse = DateTime.UtcNow;
+                    freezetime.GameInstance.useTimerMode = false;
+                    causedTimeEvent = false;
+
+                    TimeSpan timeoff = new TimeSpan(0, 0, 0, -((int)Math.Floor(freezetime.useTime)), -((int)Math.Floor((freezetime.useTime * 1000) % 1000)));
+                    freezetime.GameInstance.lastUse.Add(timeoff);
+                }
             });
             #endregion
 
@@ -290,6 +316,19 @@ namespace DillyzLegacyPack
                 writer.Write(player.PlayerId);
                 writer.Write(randomness);
             });
+        }
+
+        public static void FreezeTime(bool frozen)
+        {
+            timeFrozen = frozen;
+            PlayerControl player = PlayerControl.LocalPlayer;
+            if (DillyzUtil.roleSide(player) != CustomRoleSide.Impostor)
+            {
+                foreach (CustomButton button in CustomButton.AllCustomButtons)
+                    button.GameInstance.blockingButton = timeFrozen;
+            }
+            if (reversetime.GameInstance != null)
+                reversetime.GameInstance.blockingButton = timeFrozen;
         }
     }
 }

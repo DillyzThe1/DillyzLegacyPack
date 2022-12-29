@@ -15,6 +15,8 @@ namespace DillyzLegacyPack
             public static void Postfix(PlayerControl __instance) {
                 DillyzLegacyPackMain.senseiSwordOut = false;
                 DillyzLegacyPackMain.namesPublic.Clear();
+                DillyzLegacyPackMain.timeFrozen = false;
+                DillyzLegacyPackMain.causedTimeEvent = false;
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Revive))]
