@@ -27,6 +27,13 @@ namespace DillyzLegacyPack
         public static CustomRole phoenixzero;
         public static bool senseiSwordOut = false;
 
+        #region settings
+        public static string chanceMode = "Death";
+        public static string wrathDisables = "Crewmate Kill";
+        public static string communicateDisables = "Any Revive";
+        #endregion
+
+
         public static List<byte> namesPublic = new List<byte>();
 
         public override void Load()
@@ -39,6 +46,7 @@ namespace DillyzLegacyPack
             assembly = Assembly.GetExecutingAssembly();
 
             string[] empty = new string[] { };
+            string[] phoenixnormal = new string[] { "Phoenix" };
 
             #region phoenix
             // normal Phoenix
@@ -48,12 +56,12 @@ namespace DillyzLegacyPack
             phoenix.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
             phoenix.roletoGhostInto = "Phoenix's Ghost";
 
-            CustomButton advice = DillyzUtil.addButton(assembly, "Take Advice", "DillyzLegacyPack.Assets.dillyzthe1.png", 60f, false, new string[] { "Phoenix" }, empty, 
-                delegate(KillButtonCustomData button, bool success)
+            CustomButton advice = DillyzUtil.addButton(assembly, "Take Advice", "DillyzLegacyPack.Assets.dillyzthe1.png", 60f, false, empty, empty,
+                delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
                         return;
-                    
+
                     DillyzUtil.RpcCommitAssassination(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer);
                 }
             );
@@ -120,7 +128,8 @@ namespace DillyzLegacyPack
                         return;
 
                     namesPublic.Add(PlayerControl.LocalPlayer.PlayerId);
-                    DillyzUtil.InvokeRPCCall("RevealPhoenixZero", delegate (MessageWriter writer) {
+                    DillyzUtil.InvokeRPCCall("RevealPhoenixZero", delegate (MessageWriter writer)
+                    {
                         writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         writer.Write(true);
                     });
@@ -128,10 +137,12 @@ namespace DillyzLegacyPack
             );
             reveal.buttonText = "Reveal";
             reveal.textOutlineColor = phoenix.roleColor;
-            reveal.SetUseTimeButton(10f, delegate(KillButtonCustomData button, bool interrupted) {
+            reveal.SetUseTimeButton(10f, delegate (KillButtonCustomData button, bool interrupted)
+            {
                 namesPublic.Remove(PlayerControl.LocalPlayer.PlayerId);
                 PlayerControl.LocalPlayer.ToggleHighlight(false, RoleTeamTypes.Crewmate);
-                DillyzUtil.InvokeRPCCall("RevealPhoenixZero", delegate (MessageWriter writer) {
+                DillyzUtil.InvokeRPCCall("RevealPhoenixZero", delegate (MessageWriter writer)
+                {
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(false);
                 });
@@ -164,10 +175,12 @@ namespace DillyzLegacyPack
             #endregion
 
             #region rpc
-            DillyzUtil.AddRpcCall("SecondChance", delegate(MessageReader reader) {
+            DillyzUtil.AddRpcCall("SecondChance", delegate (MessageReader reader)
+            {
                 SecondChance(DillyzUtil.findPlayerControl(reader.ReadByte()), false);
             });
-            DillyzUtil.AddRpcCall("RevealPhoenixZero", delegate (MessageReader reader) {
+            DillyzUtil.AddRpcCall("RevealPhoenixZero", delegate (MessageReader reader)
+            {
                 PlayerControl p = DillyzUtil.findPlayerControl(reader.ReadByte());
                 bool on = reader.ReadBoolean();
 
@@ -182,6 +195,17 @@ namespace DillyzLegacyPack
                 //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Outline", phoenixzero.nameColorPublic ? 2f : 0f);
                 //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", DillyzUtil.color32ToColor(phoenixzero.roleColor));
             });
+            #endregion
+
+            #region settings
+            //phoenix.AddAdvancedSetting_Boolean("Suicide Button", false, delegate (bool v) { advice.allowedRoles.Clear(); if (v) advice.allowedRoles.Add(phoenix.name); });
+            phoenix.AddAdvancedSetting_String("2nd Chance Allowed", chanceMode, new string[] { "Tasks Done", "Death", "Meeting Over", "Exile Only", "Kill Only" }, delegate (string v) { chanceMode = v; });
+            phoenix.AddAdvancedSetting_Float("Wrath Cooldown", 15, 5, 75, 5, delegate (float v) { wrath.cooldown = v; }).suffix = "s";
+            //phoenix.AddAdvancedSetting_String("Wrath Disabled On", wrathDisables, new string[] { "Any Kill", "Impostor Kill", "Crewmate Kill", "Other Kill", "None"}, delegate(string v) { wrathDisables = v; });
+            phoenix.AddAdvancedSetting_Float("Comm. Cooldown", 35, 5, 100, 5, delegate(float v) { communicate.cooldown = v; }).suffix = "s";
+            //phoenix.AddAdvancedSetting_String("Comm. Disabled On", communicateDisables, new string[] { "Revived Any", "Revived Impostor", "Revived Crewmate", "Revive Other", "None"}, delegate(string v) { communicateDisables = v; });
+            phoenix.AddAdvancedSetting_Float("Reveal Cooldown", 60, 10, 115, 5, delegate(float v) { reveal.cooldown = v; }).suffix = "s";
+            phoenix.AddAdvancedSetting_Float("Reveal Timer", 10, 5, 40, 2.5f, delegate(float v) { reveal.useTime = v; });
             #endregion
         }
 
