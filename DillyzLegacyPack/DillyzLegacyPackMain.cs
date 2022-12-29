@@ -9,6 +9,7 @@ using BepInEx.IL2CPP;
 using DillyzRoleApi_Rewritten;
 using HarmonyLib;
 using Hazel;
+using Iced.Intel;
 using UnityEngine;
 
 namespace DillyzLegacyPack
@@ -25,6 +26,8 @@ namespace DillyzLegacyPack
 
         public static CustomRole phoenixzero;
         public static bool senseiSwordOut = false;
+
+        public static List<byte> namesPublic = new List<byte>();
 
         public override void Load()
         {
@@ -111,15 +114,13 @@ namespace DillyzLegacyPack
             communicate.textOutlineColor = phoenix.roleColor;
             communicate.buttonTargetsGhosts = true;
 
-            CustomButton reveal = DillyzUtil.addButton(assembly, "Phoenix Reveal", "DillyzLegacyPack.Assets.dillyzthe1.png", 60f, false, access_phoenixzero, empty,
+            CustomButton reveal = DillyzUtil.addButton(assembly, "Phoenix Reveal", "DillyzLegacyPack.Assets.dillyzthe1.png", 0f, false, access_phoenixzero, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
                         return;
 
-                    phoenixzero.nameColorPublic = true;
-                   // PlayerControl.LocalPlayer.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Outline", 2f);
-                    //PlayerControl.LocalPlayer.gameObject.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", DillyzUtil.color32ToColor(phoenixzero.roleColor));
+                    namesPublic.Add(PlayerControl.LocalPlayer.PlayerId);
                     DillyzUtil.InvokeRPCCall("RevealPhoenixZero", delegate (MessageWriter writer) {
                         writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         writer.Write(true);
@@ -128,10 +129,9 @@ namespace DillyzLegacyPack
             );
             reveal.buttonText = "Reveal";
             reveal.textOutlineColor = phoenix.roleColor;
-            reveal.SetUseTimeButton(7.5f, delegate(KillButtonCustomData button, bool interrupted) {
-                phoenixzero.nameColorPublic = false;
-               // PlayerControl.LocalPlayer.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Outline", 2f);
-               // PlayerControl.LocalPlayer.gameObject.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", Color.clear);
+            reveal.SetUseTimeButton(10f, delegate(KillButtonCustomData button, bool interrupted) {
+                namesPublic.Remove(PlayerControl.LocalPlayer.PlayerId);
+                PlayerControl.LocalPlayer.ToggleHighlight(false, RoleTeamTypes.Crewmate);
                 DillyzUtil.InvokeRPCCall("RevealPhoenixZero", delegate (MessageWriter writer) {
                     writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     writer.Write(false);
@@ -169,11 +169,19 @@ namespace DillyzLegacyPack
                 SecondChance(DillyzUtil.findPlayerControl(reader.ReadByte()), false);
             });
             DillyzUtil.AddRpcCall("RevealPhoenixZero", delegate (MessageReader reader) {
-                PlayerControl targetPhoenix = DillyzUtil.findPlayerControl(reader.ReadByte());
+                PlayerControl p = DillyzUtil.findPlayerControl(reader.ReadByte());
+                bool on = reader.ReadBoolean();
 
-                phoenixzero.nameColorPublic = reader.ReadBoolean();
-              //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Outline", phoenixzero.nameColorPublic ? 2f : 0f);
-             //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", DillyzUtil.color32ToColor(phoenixzero.roleColor));
+                if (on)
+                    namesPublic.Add(p.PlayerId);
+                else
+                {
+                    namesPublic.Remove(p.PlayerId);
+                    p.ToggleHighlight(false, RoleTeamTypes.Crewmate);
+                }
+
+                //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Outline", phoenixzero.nameColorPublic ? 2f : 0f);
+                //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", DillyzUtil.color32ToColor(phoenixzero.roleColor));
             });
             #endregion
         }
