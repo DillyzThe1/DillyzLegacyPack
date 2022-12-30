@@ -162,7 +162,7 @@ namespace DillyzLegacyPack
             communicate.textOutlineColor = phoenix.roleColor;
             communicate.buttonTargetsGhosts = true;
 
-            revealbutton = DillyzUtil.addButton(assembly, "Phoenix Reveal", "DillyzLegacyPack.Assets.reveal.png", 1f, false, access_phoenixzero, empty,
+            revealbutton = DillyzUtil.addButton(assembly, "Phoenix Reveal", "DillyzLegacyPack.Assets.reveal.png", 60f, false, access_phoenixzero, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -224,7 +224,7 @@ namespace DillyzLegacyPack
             timepostor.a_or_an = "a";
             timepostor.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
 
-            freezetime = DillyzUtil.addButton(assembly, "Freeze Time", "DillyzLegacyPack.Assets.dillyzthe1.png", 35f, false, new string[] { "TiMEpostor" }, empty,
+            freezetime = DillyzUtil.addButton(assembly, "Freeze Time", "DillyzLegacyPack.Assets.freeze.png", 35f, false, new string[] { "TiMEpostor" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -246,7 +246,7 @@ namespace DillyzLegacyPack
                 }
             });
 
-            reversetime = DillyzUtil.addButton(assembly, "Reverse Time", "DillyzLegacyPack.Assets.dillyzthe1.png", 40f, false, new string[] { "TiMEpostor" }, empty,
+            reversetime = DillyzUtil.addButton(assembly, "Reverse Time", "DillyzLegacyPack.Assets.reverse.png", 40f, false, new string[] { "TiMEpostor" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -255,7 +255,7 @@ namespace DillyzLegacyPack
                     Log.LogInfo("Reverse time for " + timeReversed + "s.");
                 }
             );
-            reversetime.textOutlineColor = timepostor.roleColor;
+            reversetime.textOutlineColor = new Color32(255, 0, 51, 255);
             #endregion
 
             #region rpc
