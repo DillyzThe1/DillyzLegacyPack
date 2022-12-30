@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbilityPatches.cs" />
+    <Compile Include="DeadBodyPatch.cs" />
     <Compile Include="DillyzLegacyPackMain.cs" />
     <Compile Include="DillyzUtilPatch.cs" />
     <Compile Include="GameManagerPatch.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="MapBehaviourPatch.cs" />
     <Compile Include="PlayerControlPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecordedObject.cs" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>xcopy ".\$(AssemblyName).dll" "%25AmongUsModDir%25\BepInEx\plugins\" /y

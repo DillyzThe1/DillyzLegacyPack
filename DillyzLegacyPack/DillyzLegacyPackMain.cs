@@ -10,6 +10,7 @@ using DillyzRoleApi_Rewritten;
 using HarmonyLib;
 using Hazel;
 using Iced.Intel;
+using Il2CppSystem.Runtime.CompilerServices;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -30,6 +31,7 @@ namespace DillyzLegacyPack
         public static CustomButton wrath;
         public static bool senseiSwordOut = false;
         public static bool timeFrozen = false;
+        public static bool reversingTime = false;
         public static CustomButton freezetime;
         public static CustomButton reversetime;
         public static bool causedTimeEvent = false;
@@ -240,9 +242,10 @@ namespace DillyzLegacyPack
                         return;
 
                     causedTimeEvent = true;
+                    reversingTime = true;
                     Log.LogInfo("Freeze time.");
                     FreezeTime(true);
-                    DillyzUtil.InvokeRPCCall("time_freeze", delegate (MessageWriter writer) { writer.Write(true); });
+                    DillyzUtil.InvokeRPCCall("time_reverse", delegate (MessageWriter writer) { });
                 }
             );
             freezetime.textOutlineColor = timepostor.roleColor;
@@ -251,7 +254,6 @@ namespace DillyzLegacyPack
                 {
                     Log.LogInfo("Continue time.");
                     FreezeTime(false);
-                    DillyzUtil.InvokeRPCCall("time_freeze", delegate (MessageWriter writer) { writer.Write(false); });
                 }
             });
 
@@ -262,9 +264,23 @@ namespace DillyzLegacyPack
                         return;
 
                     Log.LogInfo("Reverse time for " + timeReversed + "s.");
+                    causedTimeEvent = true;
+                    reversingTime = true;
+                    FreezeTime(true);
+                    DillyzUtil.InvokeRPCCall("time_reverse", delegate (MessageWriter writer) { writer.Write(true); });
                 }
             );
             reversetime.textOutlineColor = new Color32(255, 0, 51, 255);
+            reversetime.SetUseTimeButton(10f, delegate (KillButtonCustomData button, bool interrupted) {
+                if (causedTimeEvent)
+                {
+                    Log.LogInfo("Continue time.");
+                    reversingTime = false;
+                    FreezeTime(false);
+                    DillyzUtil.InvokeRPCCall("time_reverse", delegate (MessageWriter writer) { writer.Write(false); });
+                }
+            });
+
             #endregion
 
             #region rpc
@@ -302,6 +318,21 @@ namespace DillyzLegacyPack
                     freezetime.GameInstance.lastUse.Add(timeoff);
                 }
             });
+            DillyzUtil.AddRpcCall("time_reverse", delegate (MessageReader reader) {
+                bool active = reader.ReadBoolean();
+                FreezeTime(active);
+                reversingTime = active;
+
+                if (DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "TiMEpostor" && freezetime.GameInstance != null)
+                {
+                    reversetime.GameInstance.lastUse = DateTime.UtcNow;
+                    reversetime.GameInstance.useTimerMode = false;
+                    causedTimeEvent = false;
+
+                    TimeSpan timeoff = new TimeSpan(0, 0, 0, -((int)Math.Floor(reversetime.useTime)), -((int)Math.Floor((reversetime.useTime * 1000) % 1000)));
+                    reversetime.GameInstance.lastUse.Add(timeoff);
+                }
+            });
             #endregion
 
             #region settings
@@ -321,7 +352,7 @@ namespace DillyzLegacyPack
             timepostor.AddAdvancedSetting_Float("Frozen Duration", 17.5f, 7.5f, 30f, 2.5f, delegate (float v) { freezetime.useTime = v; }).suffix = "s";
             timepostor.AddAdvancedSetting_Boolean("Time Reversal", true, delegate(bool v) { reversetime.allowedRoles.Clear(); if (v) reversetime.allowedRoles.Add(timepostor.name); });
             timepostor.AddAdvancedSetting_Float("Revering Cooldown", 40, 5, 85, 5, delegate (float v) { reversetime.cooldown = v; }).suffix = "s";
-            timepostor.AddAdvancedSetting_Float("Reversal Duration", 10f, 5f, 25f, 2.5f, delegate (float v) { timeReversed = v; }).suffix = "s";
+            timepostor.AddAdvancedSetting_Float("Reversal Duration", 10f, 5f, 25f, 2.5f, delegate (float v) { timeReversed = v; reversetime.useTime = v; }).suffix = "s";
             #endregion
         }
 
@@ -372,7 +403,7 @@ namespace DillyzLegacyPack
         {
             timeFrozen = frozen;
             PlayerControl player = PlayerControl.LocalPlayer;
-            if (DillyzUtil.getRoleName(player) != "TiMEpostor")
+            if (DillyzUtil.getRoleName(player) != "TiMEpostor" || reversingTime)
             {
                 foreach (CustomButton button in CustomButton.AllCustomButtons)
                     button.GameInstance.blockingButton = timeFrozen;

@@ -14,7 +14,7 @@ namespace DillyzLegacyPack
         [HarmonyPriority(Priority.HigherThanNormal)]
         class AbilityButtonDisability {
             public static bool Prefix(AbilityButton __instance) {
-                return !DillyzLegacyPackMain.timeFrozen || DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "TiMEpostor";
+                return !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(PlayerControl.LocalPlayer) != "TiMEpostor") && !DillyzLegacyPackMain.reversingTime;
             }
         }
         [HarmonyPatch(typeof(ReportButton), nameof(ReportButton.DoClick))]
@@ -23,7 +23,7 @@ namespace DillyzLegacyPack
         {
             public static bool Prefix(ReportButton __instance)
             {
-                return !DillyzLegacyPackMain.timeFrozen;
+                return !DillyzLegacyPackMain.timeFrozen && !DillyzLegacyPackMain.reversingTime;
             }
         }
         [HarmonyPatch(typeof(UseButton), nameof(UseButton.DoClick))]
@@ -32,7 +32,7 @@ namespace DillyzLegacyPack
         {
             public static bool Prefix(UseButton __instance)
             {
-                return !DillyzLegacyPackMain.timeFrozen;
+                return !DillyzLegacyPackMain.timeFrozen && !DillyzLegacyPackMain.reversingTime;
             }
         }
         [HarmonyPatch(typeof(AdminButton), nameof(AdminButton.DoClick))]
@@ -41,7 +41,7 @@ namespace DillyzLegacyPack
         {
             public static bool Prefix(AdminButton __instance)
             {
-                return !DillyzLegacyPackMain.timeFrozen;
+                return !DillyzLegacyPackMain.timeFrozen && !DillyzLegacyPackMain.reversingTime;
             }
         }
         [HarmonyPatch(typeof(PetButton), nameof(PetButton.DoClick))]
@@ -50,7 +50,7 @@ namespace DillyzLegacyPack
         {
             public static bool Prefix(PetButton __instance)
             {
-                return !DillyzLegacyPackMain.timeFrozen;
+                return !DillyzLegacyPackMain.timeFrozen && !DillyzLegacyPackMain.reversingTime;
             }
         }
         [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
@@ -59,7 +59,7 @@ namespace DillyzLegacyPack
         {
             public static bool Prefix(KillButton __instance)
             {
-                return !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(PlayerControl.LocalPlayer) != "TiMEpostor");
+                return !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(PlayerControl.LocalPlayer) != "TiMEpostor") && !DillyzLegacyPackMain.reversingTime;
             }
         }
         [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
@@ -68,7 +68,7 @@ namespace DillyzLegacyPack
         {
             public static bool Prefix(VentButton __instance)
             {
-                return !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(PlayerControl.LocalPlayer) != "TiMEpostor");
+                return !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(PlayerControl.LocalPlayer) != "TiMEpostor") && !DillyzLegacyPackMain.reversingTime;
             }
         }
     }

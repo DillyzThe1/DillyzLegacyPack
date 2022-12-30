@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace DillyzLegacyPack
 {
@@ -17,6 +18,7 @@ namespace DillyzLegacyPack
                 DillyzLegacyPackMain.namesPublic.Clear();
                 DillyzLegacyPackMain.timeFrozen = false;
                 DillyzLegacyPackMain.causedTimeEvent = false;
+                DillyzLegacyPackMain.reversingTime = false;
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Revive))]
@@ -26,6 +28,16 @@ namespace DillyzLegacyPack
             {
                 if (AmongUsClient.Instance.AmHost && DillyzUtil.getRoleName(__instance) == "Phoenix's Ghost")
                     DillyzUtil.RpcSetRole(__instance, "Phoenix Zero");
+            }
+        }
+
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Start))]
+        class PlayerControlPatch_Start
+        {
+            public static void Postfix(PlayerControl __instance)
+            {
+                RecordedObject ro = __instance.gameObject.AddComponent<RecordedObject>();
+                ro.rb2d = __instance.gameObject.GetComponent<Rigidbody2D>();
             }
         }
     }
