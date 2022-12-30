@@ -174,6 +174,12 @@ namespace DillyzLegacyPack
                         writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         writer.Write(true);
                     });
+
+                    if (revealbutton.GameInstance == null)
+                        return;
+
+                    revealbutton.GameInstance.blockingButton = true;
+                    revealbutton.GameInstance.showIconOnBlocked = true;
                 }
             );
             revealbutton.buttonText = "Reveal";

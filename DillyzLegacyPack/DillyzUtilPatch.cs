@@ -17,7 +17,7 @@ namespace DillyzLegacyPack
             KillAnimation.SetMovement(assassinator, !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(assassinator) != "TiMEpostor"));
             KillAnimation.SetMovement(target, !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(target) != "TiMEpostor"));
 
-            if (assassinator == PlayerControl.LocalPlayer && DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "Phoenix Zero" && DillyzLegacyPackMain.wrath.GameInstance != null)
+            if (assassinator.PlayerId == PlayerControl.LocalPlayer.PlayerId && DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "Phoenix Zero" && DillyzLegacyPackMain.wrath.GameInstance != null)
                 switch (DillyzLegacyPackMain.wrathDisables) {
                     case "Any Kill":
                         DillyzLegacyPackMain.wrath.GameInstance.blockingButton = true;
