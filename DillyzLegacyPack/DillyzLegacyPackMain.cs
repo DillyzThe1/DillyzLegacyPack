@@ -83,7 +83,7 @@ namespace DillyzLegacyPack
             phoenixghost.hasSettings = false;
             phoenixghost.ghostRole = true;
 
-            CustomButton secondchance = DillyzUtil.addButton(assembly, "2nd Chance", "DillyzLegacyPack.Assets.dillyzthe1.png", 20f, false, new string[] { "Phoenix's Ghost" }, empty,
+            CustomButton secondchance = DillyzUtil.addButton(assembly, "2nd Chance", "DillyzLegacyPack.Assets.second_chance.png", 20f, false, new string[] { "Phoenix's Ghost" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -103,7 +103,7 @@ namespace DillyzLegacyPack
 
             string[] access_phoenixzero = new string[] { phoenixzero.name };
 
-            CustomButton wrath = DillyzUtil.addButton(assembly, "Phoenix Wrath", "DillyzLegacyPack.Assets.dillyzthe1.png", 15f, true, access_phoenixzero, empty,
+            CustomButton wrath = DillyzUtil.addButton(assembly, "Phoenix Wrath", "DillyzLegacyPack.Assets.wrath.png", 15f, true, access_phoenixzero, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -115,7 +115,7 @@ namespace DillyzLegacyPack
             wrath.buttonText = "Wrath";
             wrath.textOutlineColor = phoenix.roleColor;
 
-            CustomButton communicate = DillyzUtil.addButton(assembly, "Phoenix Communicate", "DillyzLegacyPack.Assets.dillyzthe1.png", 35f, true, access_phoenixzero, empty,
+            CustomButton communicate = DillyzUtil.addButton(assembly, "Phoenix Communicate", "DillyzLegacyPack.Assets.communicate.png", 35f, true, access_phoenixzero, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
