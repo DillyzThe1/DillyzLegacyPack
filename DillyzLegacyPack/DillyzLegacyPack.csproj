@@ -49,6 +49,7 @@
     <Compile Include="HudManagerPatch.cs" />
     <Compile Include="MapBehaviourPatch.cs" />
     <Compile Include="PlayerControlPatch.cs" />
+    <Compile Include="PlayerVoteAreaPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecordedObject.cs" />
   </ItemGroup>

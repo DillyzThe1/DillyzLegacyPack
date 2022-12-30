@@ -29,6 +29,7 @@ namespace DillyzLegacyPack
         public static CustomRole phoenixzero;
         public static CustomButton revealbutton;
         public static CustomButton wrath;
+        public static CustomRole dictator;
         public static bool senseiSwordOut = false;
         public static bool timeFrozen = false;
         public static bool reversingTime = false;
@@ -289,7 +290,7 @@ namespace DillyzLegacyPack
             #endregion
 
             #region dictator
-            CustomRole dictator = DillyzUtil.createRole("Dictator", "Dictate the crew's votes.", true, false, new Color32(255, 100, 50, 255), false, CustomRoleSide.Crewmate,
+            dictator = DillyzUtil.createRole("Dictator", "Dictate the crew's votes.", true, false, new Color32(255, 100, 50, 255), false, CustomRoleSide.Crewmate,
                                                                                                                                         VentPrivilege.None, false, true);
             dictator.a_or_an = "a";
             dictator.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
