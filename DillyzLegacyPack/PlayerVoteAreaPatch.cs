@@ -38,8 +38,12 @@ namespace DillyzLegacyPack
         {
             public static void Prefix(PlayerVoteArea __instance)
             {
-                foreach (UiElement button in DictateButtons.values)
-                    GameObject.Destroy(button);
+                if (DictateButtons == null)
+                    return;
+                if (DictateButtons.values != null)
+                    foreach (UiElement button in DictateButtons.values)
+                        if (button != null)
+                            GameObject.Destroy(button.gameObject);
                 DictateButtons.Clear();
             }
         }
