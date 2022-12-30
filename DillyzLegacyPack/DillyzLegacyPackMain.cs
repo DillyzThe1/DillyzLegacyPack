@@ -34,6 +34,9 @@ namespace DillyzLegacyPack
         public static CustomButton reversetime;
         public static bool causedTimeEvent = false;
 
+        public static Sprite ssreveal;
+        public static Sprite sshide;
+
         #region settings
         public static string chanceMode = "Death";
         public static string wrathDisables = "Crewmate Kill";
@@ -202,8 +205,11 @@ namespace DillyzLegacyPack
             sensei.a_or_an = "a";
             sensei.SetSprite(assembly, "DillyzLegacyPack.Assets.sensei.png");
 
+
+            ssreveal = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.reveal2.png");
+            sshide = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.hide.png");
             CustomButton sword = null;
-            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.dillyzthe1.png", 2.5f, false, new string[] { "Sensei" }, empty,
+            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.reveal2.png", 2.5f, false, new string[] { "Sensei" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -211,6 +217,9 @@ namespace DillyzLegacyPack
 
                     senseiSwordOut = !senseiSwordOut;
                     sword.buttonText = senseiSwordOut ? "Stash" : "Reveal";
+
+                    if (sword.GameInstance != null)
+                        sword.GameInstance.killButton.graphic.sprite = senseiSwordOut ? sshide : ssreveal;
                 }
             );
             sword.buttonText = "Reveal";

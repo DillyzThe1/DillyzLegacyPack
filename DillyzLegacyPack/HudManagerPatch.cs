@@ -92,4 +92,13 @@ namespace DillyzLegacyPack
             }
         }
     }
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    class HudManagerPatch_Start {
+
+        public static void Postfix(HudManager __instance) {
+            DillyzLegacyPackMain.ssreveal = DillyzUtil.getSprite(DillyzLegacyPackMain.assembly, "DillyzLegacyPack.Assets.reveal2.png");
+            DillyzLegacyPackMain.sshide = DillyzUtil.getSprite(DillyzLegacyPackMain.assembly, "DillyzLegacyPack.Assets.hide.png");
+        }
+    }
 }

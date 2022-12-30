@@ -497,5 +497,11 @@ start "Among Us" "%25AmongUsModDir%25/Among Us.exe"</PostBuildEvent>
     <EmbeddedResource Include="Assets\freeze.png" />
     <EmbeddedResource Include="Assets\reverse.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\hide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\reveal2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
