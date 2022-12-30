@@ -86,7 +86,31 @@ namespace DillyzLegacyPack
 
             if (this.pc != null && storedTime.hadPC) {
                 if (this.pc.inVent != storedTime.inVent)
+                {
+
+                    Vent closestVent = Vent.currentVent;
+                    double lastdist = Double.MaxValue;
+
+                    foreach (Vent vent in ShipStatus.Instance.AllVents) {
+                        double dist = DillyzUtil.getDist(new Vector2(vent.transform.position.x, vent.transform.position.y), this.pc.GetTruePosition());
+                        if (dist < lastdist) {
+                            lastdist = dist;
+                            closestVent = vent;
+                        }
+                    }
+
+                    this.pc.walkingToVent = false;
+                    if (closestVent != null)
+                        if (storedTime.inVent)
+                            closestVent.EnterVent(this.pc);
+                        else
+                            closestVent.ExitVent(this.pc);
+                    if (this.pc == PlayerControl.LocalPlayer)
+                        closestVent.SetButtons(storedTime.inVent);
+
                     this.pc.inVent = storedTime.inVent;
+                    this.pc.Visible = !storedTime.inVent;
+                }
                 if (DillyzUtil.getRoleName(this.pc) != storedTime.role)
                     CustomRole.setRoleName(this.pc.PlayerId, storedTime.role);
                 if (this.pc.Data.IsDead != storedTime.isDead)
