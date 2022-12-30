@@ -1,11 +1,14 @@
 ﻿using DillyzRoleApi_Rewritten;
 using HarmonyLib;
+using Il2CppSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
+using UnhollowerBaseLib;
+using UnhollowerRuntimeLib;
 using UnityEngine;
 
 namespace DillyzLegacyPack
@@ -14,6 +17,8 @@ namespace DillyzLegacyPack
     [HarmonyPriority(Priority.LowerThanNormal)] // low
     class HudManagerPatch
     {
+        //public static KillButtonCustomData newrevealbutton;
+        //public static Il2CppReferenceArray<Material> revealmats;
         public static void Postfix(HudManager __instance) {
 
             if (DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "TiMEpostor")
@@ -24,6 +29,26 @@ namespace DillyzLegacyPack
             }
             else if (__instance.SabotageButton.transform.parent != __instance.KillButton.transform.parent)
                 __instance.SabotageButton.transform.parent = __instance.KillButton.transform.parent;
+
+            /*if (newrevealbutton != DillyzLegacyPackMain.revealbutton.GameInstance && DillyzLegacyPackMain.revealbutton.GameInstance != null) {
+                newrevealbutton = DillyzLegacyPackMain.revealbutton.GameInstance;
+                SpriteRenderer spr = newrevealbutton.killButton.GetComponent<SpriteRenderer>();
+                if (spr != null)
+                {
+                    Material colormat = new Material(Shader.Find("Unlit/PlayerShader"));
+                    revealmats = spr.materials;
+                    DillyzLegacyPackMain.Instance.Log.LogInfo(revealmats.Count + " mats");
+                    revealmats.AddItem(colormat);
+                    DillyzLegacyPackMain.Instance.Log.LogInfo(revealmats.Count + " mats");
+
+                    colormat.SetColor(PlayerMaterial.BackColor, Palette.ShadowColors[PlayerControl.LocalPlayer.cosmetics.bodyMatProperties.ColorId]);
+                    colormat.SetColor(PlayerMaterial.BodyColor, Palette.PlayerColors[PlayerControl.LocalPlayer.cosmetics.bodyMatProperties.ColorId]);
+                    colormat.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
+                }
+            }
+
+            if (DillyzLegacyPackMain.revealbutton.GameInstance != null)
+                DillyzLegacyPackMain.revealbutton.GameInstance.killButton.GetComponent<SpriteRenderer>().materials = revealmats;*/
 
             if (DillyzLegacyPackMain.timeFrozen)
             {

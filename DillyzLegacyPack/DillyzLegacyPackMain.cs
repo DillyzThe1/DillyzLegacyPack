@@ -26,6 +26,7 @@ namespace DillyzLegacyPack
         public static Assembly assembly;
 
         public static CustomRole phoenixzero;
+        public static CustomButton revealbutton;
         public static bool senseiSwordOut = false;
         public static bool timeFrozen = false;
         public static CustomButton freezetime;
@@ -128,7 +129,7 @@ namespace DillyzLegacyPack
             communicate.textOutlineColor = phoenix.roleColor;
             communicate.buttonTargetsGhosts = true;
 
-            CustomButton reveal = DillyzUtil.addButton(assembly, "Phoenix Reveal", "DillyzLegacyPack.Assets.reveal.png", 60f, false, access_phoenixzero, empty,
+            revealbutton = DillyzUtil.addButton(assembly, "Phoenix Reveal", "DillyzLegacyPack.Assets.reveal.png", 1f, false, access_phoenixzero, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -142,9 +143,9 @@ namespace DillyzLegacyPack
                     });
                 }
             );
-            reveal.buttonText = "Reveal";
-            reveal.textOutlineColor = phoenix.roleColor;
-            reveal.SetUseTimeButton(10f, delegate (KillButtonCustomData button, bool interrupted)
+            revealbutton.buttonText = "Reveal";
+            revealbutton.textOutlineColor = phoenix.roleColor;
+            revealbutton.SetUseTimeButton(10f, delegate (KillButtonCustomData button, bool interrupted)
             {
                 namesPublic.Remove(PlayerControl.LocalPlayer.PlayerId);
                 PlayerControl.LocalPlayer.ToggleHighlight(false, RoleTeamTypes.Crewmate);
@@ -263,8 +264,8 @@ namespace DillyzLegacyPack
             phoenix.AddAdvancedSetting_String("Wrath Disabled On", wrathDisables, new string[] { "Any Kill", "Impostor Kill", "Crewmate Kill", "Other Kill", "None"}, delegate(string v) { wrathDisables = v; });
             phoenix.AddAdvancedSetting_Float("Comm. Cooldown", 35, 5, 100, 5, delegate(float v) { communicate.cooldown = v; }).suffix = "s";
             phoenix.AddAdvancedSetting_String("Comm. Disabled On", communicateDisables, new string[] { "Revived Any", "Revived Impostor", "Revived Crewmate", "Revive Other", "None"}, delegate(string v) { communicateDisables = v; });
-            phoenix.AddAdvancedSetting_Float("Reveal Cooldown", 60, 10, 115, 5, delegate(float v) { reveal.cooldown = v; }).suffix = "s";
-            phoenix.AddAdvancedSetting_Float("Reveal Timer", 10, 5, 40, 2.5f, delegate (float v) { reveal.useTime = v; }).suffix = "s";
+            phoenix.AddAdvancedSetting_Float("Reveal Cooldown", 60, 10, 115, 5, delegate(float v) { revealbutton.cooldown = v; }).suffix = "s";
+            phoenix.AddAdvancedSetting_Float("Reveal Timer", 10, 5, 40, 2.5f, delegate (float v) { revealbutton.useTime = v; }).suffix = "s";
 
             // -- TiMEpostor --
             timepostor.AddAdvancedSetting_Boolean("Time Freezing", true, delegate (bool v) { freezetime.allowedRoles.Clear(); if (v) freezetime.allowedRoles.Add(timepostor.name); });
