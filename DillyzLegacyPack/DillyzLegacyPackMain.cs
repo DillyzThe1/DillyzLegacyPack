@@ -27,6 +27,7 @@ namespace DillyzLegacyPack
 
         public static CustomRole phoenixzero;
         public static CustomButton revealbutton;
+        public static CustomButton wrath;
         public static bool senseiSwordOut = false;
         public static bool timeFrozen = false;
         public static CustomButton freezetime;
@@ -36,7 +37,7 @@ namespace DillyzLegacyPack
         #region settings
         public static string chanceMode = "Death";
         public static string wrathDisables = "Crewmate Kill";
-        public static string communicateDisables = "Revived Any";
+        public static string communicateDisables = "Revive Any";
 
         public static float timeReversed = 10f;
         #endregion
@@ -104,7 +105,7 @@ namespace DillyzLegacyPack
 
             string[] access_phoenixzero = new string[] { phoenixzero.name };
 
-            CustomButton wrath = DillyzUtil.addButton(assembly, "Phoenix Wrath", "DillyzLegacyPack.Assets.wrath.png", 15f, true, access_phoenixzero, empty,
+            wrath = DillyzUtil.addButton(assembly, "Phoenix Wrath", "DillyzLegacyPack.Assets.wrath.png", 15f, true, access_phoenixzero, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -116,13 +117,45 @@ namespace DillyzLegacyPack
             wrath.buttonText = "Wrath";
             wrath.textOutlineColor = phoenix.roleColor;
 
-            CustomButton communicate = DillyzUtil.addButton(assembly, "Phoenix Communicate", "DillyzLegacyPack.Assets.communicate.png", 35f, true, access_phoenixzero, empty,
+            CustomButton communicate = null;
+            communicate = DillyzUtil.addButton(assembly, "Phoenix Communicate", "DillyzLegacyPack.Assets.communicate.png", 35f, true, access_phoenixzero, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
                         return;
 
                     SecondChance(button.killButton.currentTarget, true);
+
+                    CustomRoleSide rs = DillyzUtil.roleSide(button.killButton.currentTarget);
+                    if (communicate.GameInstance != null)
+                        switch (communicateDisables)
+                        {
+                            case "Revive Any":
+                                communicate.GameInstance.blockingButton = true;
+                                communicate.GameInstance.showIconOnBlocked = true;
+                                break;
+                            case "Revive Impostor":
+                                if (rs == CustomRoleSide.Impostor)
+                                {
+                                    communicate.GameInstance.blockingButton = true;
+                                    communicate.GameInstance.showIconOnBlocked = true;
+                                }
+                                break;
+                            case "Revive Crewmate":
+                                if (rs == CustomRoleSide.Crewmate)
+                                {
+                                    communicate.GameInstance.blockingButton = true;
+                                    communicate.GameInstance.showIconOnBlocked = true;
+                                }
+                                break;
+                            case "Revive Other":
+                                if (rs == CustomRoleSide.Independent || rs == CustomRoleSide.LoneWolf)
+                                {
+                                    communicate.GameInstance.blockingButton = true;
+                                    communicate.GameInstance.showIconOnBlocked = true;
+                                }
+                                break;
+                        }
                 }
             );
             communicate.buttonText = "Communicate";
@@ -261,9 +294,9 @@ namespace DillyzLegacyPack
             //phoenix.AddAdvancedSetting_Boolean("Suicide Button", false, delegate (bool v) { advice.allowedRoles.Clear(); if (v) advice.allowedRoles.Add(phoenix.name); });
             //phoenix.AddAdvancedSetting_String("2nd Chance Allowed", chanceMode, new string[] { "Tasks Done", "Death", "Meeting Over", "Exile Only", "Kill Only" }, delegate (string v) { chanceMode = v; });
             phoenix.AddAdvancedSetting_Float("Wrath Cooldown", 15, 5, 75, 5, delegate (float v) { wrath.cooldown = v; }).suffix = "s";
-            phoenix.AddAdvancedSetting_String("Wrath Disabled On", wrathDisables, new string[] { "Any Kill", "Impostor Kill", "Crewmate Kill", "Other Kill", "None"}, delegate(string v) { wrathDisables = v; });
+            phoenix.AddAdvancedSetting_String("Wrath Disabled On", wrathDisables, new string[] { "Any Kill", "Impostor Kill", "Crewmate Kill", "Other Kill", "Non-Crew Kill", "None"}, delegate(string v) { wrathDisables = v; });
             phoenix.AddAdvancedSetting_Float("Comm. Cooldown", 35, 5, 100, 5, delegate(float v) { communicate.cooldown = v; }).suffix = "s";
-            phoenix.AddAdvancedSetting_String("Comm. Disabled On", communicateDisables, new string[] { "Revived Any", "Revived Impostor", "Revived Crewmate", "Revive Other", "None"}, delegate(string v) { communicateDisables = v; });
+            phoenix.AddAdvancedSetting_String("Comm. Disabled On", communicateDisables, new string[] { "Revive Any", "Revive Impostor", "Revive Crewmate", "Revive Other", "None"}, delegate(string v) { communicateDisables = v; });
             phoenix.AddAdvancedSetting_Float("Reveal Cooldown", 60, 10, 115, 5, delegate(float v) { revealbutton.cooldown = v; }).suffix = "s";
             phoenix.AddAdvancedSetting_Float("Reveal Timer", 10, 5, 40, 2.5f, delegate (float v) { revealbutton.useTime = v; }).suffix = "s";
 

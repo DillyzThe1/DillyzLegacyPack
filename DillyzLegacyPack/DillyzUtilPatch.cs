@@ -16,6 +16,42 @@ namespace DillyzLegacyPack
 
             KillAnimation.SetMovement(assassinator, !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(assassinator) != "TiMEpostor"));
             KillAnimation.SetMovement(target, !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(target) != "TiMEpostor"));
+
+            if (assassinator == PlayerControl.LocalPlayer && DillyzUtil.getRoleName(target) == "Phoenix Zero" && DillyzLegacyPackMain.wrath.GameInstance != null)
+                switch (DillyzLegacyPackMain.wrathDisables) {
+                    case "Any Kill":
+                        DillyzLegacyPackMain.wrath.GameInstance.blockingButton = true;
+                        DillyzLegacyPackMain.wrath.GameInstance.showIconOnBlocked = true;
+                        break;
+                    case "Impostor Kill":
+                        if (DillyzUtil.roleSide(target) == CustomRoleSide.Impostor)
+                        {
+                            DillyzLegacyPackMain.wrath.GameInstance.blockingButton = true;
+                            DillyzLegacyPackMain.wrath.GameInstance.showIconOnBlocked = true;
+                        }
+                        break;
+                    case "Crewmate Kill":
+                        if (DillyzUtil.roleSide(target) == CustomRoleSide.Crewmate)
+                        {
+                            DillyzLegacyPackMain.wrath.GameInstance.blockingButton = true;
+                            DillyzLegacyPackMain.wrath.GameInstance.showIconOnBlocked = true;
+                        }
+                        break;
+                    case "Other Kill":
+                        if (DillyzUtil.roleSide(target) == CustomRoleSide.Independent || DillyzUtil.roleSide(target) == CustomRoleSide.LoneWolf)
+                        {
+                            DillyzLegacyPackMain.wrath.GameInstance.blockingButton = true;
+                            DillyzLegacyPackMain.wrath.GameInstance.showIconOnBlocked = true;
+                        }
+                        break;
+                    case "Non-Crew Kill":
+                        if (DillyzUtil.roleSide(target) != CustomRoleSide.Crewmate)
+                        {
+                            DillyzLegacyPackMain.wrath.GameInstance.blockingButton = true;
+                            DillyzLegacyPackMain.wrath.GameInstance.showIconOnBlocked = true;
+                        }
+                        break;
+                }
         }
     }
 }
