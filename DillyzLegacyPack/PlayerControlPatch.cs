@@ -38,6 +38,48 @@ namespace DillyzLegacyPack
             {
                 RecordedObject ro = __instance.gameObject.AddComponent<RecordedObject>();
                 ro.rb2d = __instance.gameObject.GetComponent<Rigidbody2D>();
+                ro.spr = __instance.gameObject.transform.Find("BodyForms").transform.Find("Normal").gameObject.GetComponent<SpriteRenderer>();
+                ro.anim = __instance.gameObject.GetComponent<Animator>();
+                ro.pc = __instance;
+            }
+        }
+
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
+        class PlayerControlPatch_FixedUpdate
+        {
+            public static void Postfix(PlayerControl __instance)
+            {
+                try
+                {
+                    // cosmetic flip
+                    if (__instance == null) return;
+                    if (__instance.gameObject == null) return;
+                    Transform cosmetics = __instance.gameObject.transform.Find("Cosmetics");
+                    if (cosmetics == null) return;
+                    Transform bfs = __instance.gameObject.transform.Find("BodyForms");
+                    if (bfs == null) return;
+                    Transform norm = bfs.transform.Find("Normal");
+
+                    bool flipp = norm.gameObject.GetComponent<SpriteRenderer>().flipX;
+
+                    Transform hat = cosmetics.Find("Hat");
+                    if (hat != null)
+                    {
+                        Transform back = hat.transform.Find("Back");
+                        if (back != null)
+                            back.gameObject.GetComponent<SpriteRenderer>().flipX = flipp;
+                        Transform front = hat.transform.Find("Front");
+                        if (front != null)
+                            front.gameObject.GetComponent<SpriteRenderer>().flipX = flipp;
+                    }
+                    Transform visor = cosmetics.Find("Visor");
+                    if (visor != null)
+                        visor.gameObject.GetComponent<SpriteRenderer>().flipX = flipp;
+                    Transform skin = cosmetics.Find("Skin");
+                    if (skin != null)
+                        skin.gameObject.GetComponent<SpriteRenderer>().flipX = flipp;
+                }
+                catch { }
             }
         }
     }

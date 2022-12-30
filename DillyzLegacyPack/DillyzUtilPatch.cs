@@ -55,16 +55,6 @@ namespace DillyzLegacyPack
                         }
                         break;
                 }
-
-            List<DeadBody> bodies = UnityEngine.Object.FindObjectsOfType<DeadBody>().ToArray().ToList();
-
-            foreach (DeadBody body in bodies)
-            {
-                if (body != null && body.GetComponent<RecordedObject>() == null) {
-                    RecordedObject ro = body.gameObject.AddComponent<RecordedObject>();
-                    ro.canVanish = true;
-                }
-            }
         }
     }
 }
