@@ -58,6 +58,9 @@ namespace DillyzLegacyPack
                 __instance.UseButton?.SetTarget(null);
                 __instance.AdminButton?.SetDisabled();
 
+                __instance.PetButton?.gameObject.SetActive(false);
+                __instance.UseButton?.gameObject.SetActive(true);
+
                 if (DillyzUtil.getRoleName(PlayerControl.LocalPlayer) != "TiMEpostor" || DillyzLegacyPackMain.reversingTime)
                 {
                     __instance.AbilityButton?.SetDisabled();
