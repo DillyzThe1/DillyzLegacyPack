@@ -64,7 +64,7 @@ namespace DillyzLegacyPack
                         return false;
                     if (!__instance.Parent)
                         return false;
-                    if (!__instance.voteComplete && __instance.Parent.Select((int)__instance.TargetPlayerId))
+                    if (!__instance.voteComplete && __instance.Parent.Select((int)__instance.TargetPlayerId) && !MeetingHud.Instance.DidVote(PlayerControl.LocalPlayer.PlayerId))
                     {
                         __instance.Buttons.SetActive(true);
                         DictateSpr.enabled = true;
