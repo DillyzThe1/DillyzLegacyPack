@@ -128,7 +128,7 @@ namespace DillyzLegacyPack
             communicate.textOutlineColor = phoenix.roleColor;
             communicate.buttonTargetsGhosts = true;
 
-            CustomButton reveal = DillyzUtil.addButton(assembly, "Phoenix Reveal", "DillyzLegacyPack.Assets.dillyzthe1.png", 60f, false, access_phoenixzero, empty,
+            CustomButton reveal = DillyzUtil.addButton(assembly, "Phoenix Reveal", "DillyzLegacyPack.Assets.reveal.png", 60f, false, access_phoenixzero, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
