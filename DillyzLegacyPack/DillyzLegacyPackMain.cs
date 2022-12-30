@@ -37,6 +37,7 @@ namespace DillyzLegacyPack
         public static bool causedTimeEvent = false;
         public static DateTime timeReversedOn = DateTime.MinValue;
 
+
         public static Sprite ssreveal;
         public static Sprite sshide;
 
@@ -44,6 +45,8 @@ namespace DillyzLegacyPack
         public static string chanceMode = "Death";
         public static string wrathDisables = "Crewmate Kill";
         public static string communicateDisables = "Revive Any";
+        public static int maxDictations = 2;
+        public static int dictatingPower = 8;
 
         public static float timeReversed = 10f;
         #endregion
@@ -285,6 +288,13 @@ namespace DillyzLegacyPack
 
             #endregion
 
+            #region dictator
+            CustomRole dictator = DillyzUtil.createRole("Dictator", "Dictate the crew's votes.", true, false, new Color32(255, 100, 50, 255), false, CustomRoleSide.Crewmate,
+                                                                                                                                        VentPrivilege.None, false, true);
+            dictator.a_or_an = "a";
+            dictator.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
+            #endregion
+
             #region rpc
             DillyzUtil.AddRpcCall("SecondChance", delegate (MessageReader reader)
             {
@@ -356,6 +366,11 @@ namespace DillyzLegacyPack
             timepostor.AddAdvancedSetting_Boolean("Time Reversal", true, delegate(bool v) { reversetime.allowedRoles.Clear(); if (v) reversetime.allowedRoles.Add(timepostor.name); });
             timepostor.AddAdvancedSetting_Float("Revering Cooldown", 40, 5, 85, 5, delegate (float v) { reversetime.cooldown = v; }).suffix = "s";
             timepostor.AddAdvancedSetting_Float("Reversal Duration", timeReversed, 5f, 25f, 2.5f, delegate (float v) { timeReversed = v; reversetime.useTime = v; }).suffix = "s";
+
+            // -- Dictator --
+            dictator.AddAdvancedSetting_Boolean("Known Publicly", false, delegate (bool v) { dictator.nameColorPublic = v; });
+            dictator.AddAdvancedSetting_Float("Max Dictations", 2f, 1f, 15f, 1f, delegate (float v) { maxDictations = (int)v; });
+            dictator.AddAdvancedSetting_Float("Vote Power", 8f, 2f, 15f, 1f, delegate (float v) { dictatingPower = (int)v; }).suffix = "x";
             #endregion
         }
 
