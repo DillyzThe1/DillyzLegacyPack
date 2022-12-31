@@ -21,6 +21,8 @@ namespace DillyzLegacyPack
 
         RecordedObject rec;
 
+        float distfromplayer = 1f;
+
         void Update()
         {
             if (!setup)
@@ -34,16 +36,23 @@ namespace DillyzLegacyPack
                 return;
 
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.pc.transform.position;
-            float angle = Mathf.Atan2(pos.y, pos.x) * (180f/ (float)Math.PI);
-            rend.flipX = !(angle < -90 || angle > 90);
-            Quaternion rot = Quaternion.Euler(0f, 0f, angle - 90);
+            float angle = Mathf.Atan2(pos.y, pos.x);
+            float degrees = angle * (180f/ (float)Math.PI);
+            rend.flipX = !(degrees < -90 || degrees > 90);
+            Quaternion rot = Quaternion.Euler(0f, 0f, degrees - 90);
+            // this code made me want to a bridge
+            float bruh = angle;
+            this.transform.position += (new Vector3(Mathf.Cos(bruh), Mathf.Sin(bruh), 0f) * distfromplayer);
             this.transform.localRotation = rot;
+
         }
 
         public void Setup(PlayerControl pc) {
             this.pc = pc;
             //this.pc.SetPlayerMaterialColors(rend);
             this.transform.parent = this.pc.transform;
+
+            this.transform.localScale = Vector3.one * 0.375f;
 
             this.gameObject.name = "katana";
             this.rend = this.gameObject.AddComponent<SpriteRenderer>();
@@ -52,7 +61,7 @@ namespace DillyzLegacyPack
 
             this.col2d = this.gameObject.AddComponent<BoxCollider2D>();
             this.col2d.isTrigger = true;
-            this.col2d.size = new Vector2(this.col2d.size.x * 0.15f, this.col2d.size.y * 0.85f);
+            this.col2d.size = new Vector2(0.025f, 0.15f);//new Vector2(this.col2d.size.x * 0.15f, this.col2d.size.y * 0.85f);
             //this.col2d.enabled = (this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId);
 
             this.rec = this.gameObject.AddComponent<RecordedObject>();
