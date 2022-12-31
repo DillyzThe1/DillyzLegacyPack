@@ -48,6 +48,7 @@
     <Compile Include="GameManagerPatch.cs" />
     <Compile Include="HudManagerPatch.cs" />
     <Compile Include="MapBehaviourPatch.cs" />
+    <Compile Include="MeetingHudPatch.cs" />
     <Compile Include="PlayerControlPatch.cs" />
     <Compile Include="PlayerVoteAreaPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

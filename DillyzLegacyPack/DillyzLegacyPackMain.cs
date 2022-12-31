@@ -37,6 +37,7 @@ namespace DillyzLegacyPack
         public static CustomButton reversetime;
         public static bool causedTimeEvent = false;
         public static DateTime timeReversedOn = DateTime.MinValue;
+        public static int dictationsDone = 0;
 
 
         public static Sprite ssreveal;
@@ -346,6 +347,9 @@ namespace DillyzLegacyPack
                     TimeSpan timeoff = new TimeSpan(0, 0, 0, -((int)Math.Floor(reversetime.useTime)), -((int)Math.Floor((reversetime.useTime * 1000) % 1000)));
                     reversetime.GameInstance.lastUse.Add(timeoff);
                 }
+            });
+            DillyzUtil.AddRpcCall("dictate_vote", delegate(MessageReader reader) {
+                MeetingHudPatch.dictatedVotes.Add(reader.ReadByte());
             });
             #endregion
 

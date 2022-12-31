@@ -19,6 +19,7 @@ namespace DillyzLegacyPack
                 DillyzLegacyPackMain.timeFrozen = false;
                 DillyzLegacyPackMain.causedTimeEvent = false;
                 DillyzLegacyPackMain.reversingTime = false;
+                DillyzLegacyPackMain.dictationsDone = 0;
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Revive))]

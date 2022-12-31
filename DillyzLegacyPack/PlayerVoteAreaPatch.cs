@@ -1,5 +1,6 @@
 ﻿using DillyzRoleApi_Rewritten;
 using HarmonyLib;
+using Hazel;
 using Il2CppSystem.Collections;
 using Il2CppSystem.Collections.Generic;
 using System;
@@ -7,12 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DillyzLegacyPack
 {
     class PlayerVoteAreaPatch
     {
         public static Dictionary<byte, UiElement> DictateButtons = new Dictionary<byte, UiElement>();
+
         public static bool IsDictator() {
             return DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == DillyzLegacyPackMain.dictator.name;
         }
@@ -26,8 +29,27 @@ namespace DillyzLegacyPack
                 DictateSpr.enabled = false;
                 DictateButton.name = "DictateButton";
                 DictateButton.transform.parent = __instance.Buttons.transform;
-                DictateButton.transform.localPosition = Vector3.zero;
+                DictateButton.transform.localPosition = new Vector3(100f, 0f, 0f);
                 DictateButton.transform.Find("ControllerHighlight").gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 175f/255f, 30f/255f, 1f);
+                DictateButton.transform.Find("ControllerHighlight").gameObject.GetComponent<SpriteRenderer>().enabled = false;
+
+                PassiveButton pb = DictateButton.GetComponent<PassiveButton>();
+                pb.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+                pb.OnClick.AddListener((UnityAction)dictate);
+                void dictate() {
+                    if (!IsDictator() || DillyzLegacyPackMain.dictationsDone >= DillyzLegacyPackMain.maxDictations)
+                        return;
+                    SoundManager.Instance.PlaySound(MeetingHud.Instance.VoteSound, false, 1);
+
+                    DillyzLegacyPackMain.Instance.Log.LogInfo("dictateded");
+                    DillyzLegacyPackMain.dictationsDone++;
+                    MeetingHudPatch.dictatedVotes.Add(PlayerControl.LocalPlayer.PlayerId);
+                    DillyzUtil.InvokeRPCCall("dictate_vote", delegate(MessageWriter writer) {
+                        writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    });
+
+                    __instance.ConfirmButton.gameObject.GetComponent<PassiveButton>().OnClick.Invoke();
+                }
 
                 DictateButtons[__instance.TargetPlayerId] = DictateButton;
             }
@@ -57,7 +79,8 @@ namespace DillyzLegacyPack
                 SpriteRenderer DictateSpr = DictateButton.gameObject.GetComponent<SpriteRenderer>();
 
                 DictateSpr.enabled = false;
-                if (IsDictator()) {
+                DictateButton.transform.Find("ControllerHighlight").gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                if (IsDictator() && DillyzLegacyPackMain.maxDictations > DillyzLegacyPackMain.dictationsDone) {
                     if (PlayerControl.LocalPlayer.Data.IsDead)
                         return false;
                     if (__instance.AmDead)
@@ -68,6 +91,7 @@ namespace DillyzLegacyPack
                     {
                         __instance.Buttons.SetActive(true);
                         DictateSpr.enabled = true;
+                        DictateButton.transform.Find("ControllerHighlight").gameObject.GetComponent<SpriteRenderer>().enabled = true;
                         float startPos = __instance.AnimateButtonsFromLeft ? 0.2f : 1.95f;
                         DictateButton.transform.localPosition = new Vector3(startPos, 0f, 0f);
                         __instance.StartCoroutine(Effects.All(new IEnumerator[]
