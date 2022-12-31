@@ -258,15 +258,18 @@ namespace DillyzLegacyPack
                     reversingTime = true;
                     Log.LogInfo("Freeze time.");
                     FreezeTime(true);
-                    DillyzUtil.InvokeRPCCall("time_reverse", delegate (MessageWriter writer) { });
+                    DillyzUtil.InvokeRPCCall("time_freeze", delegate (MessageWriter writer) { writer.Write(true); });
                 }
             );
             freezetime.textOutlineColor = timepostor.roleColor;
             freezetime.SetUseTimeButton(17.5f, delegate (KillButtonCustomData button, bool interrupted) {
                 if (causedTimeEvent)
                 {
+                    causedTimeEvent = false;
+                    reversingTime = false;
                     Log.LogInfo("Continue time.");
                     FreezeTime(false);
+                    DillyzUtil.InvokeRPCCall("time_freeze", delegate (MessageWriter writer) { writer.Write(false); });
                 }
             });
 
@@ -440,6 +443,8 @@ namespace DillyzLegacyPack
 
                 KillAnimation.SetMovement(player, !timeFrozen);
             }
+            else
+                KillAnimation.SetMovement(player, true);
             if (reversetime.GameInstance != null)
                 reversetime.GameInstance.blockingButton = timeFrozen;
 
