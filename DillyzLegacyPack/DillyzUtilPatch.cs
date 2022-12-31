@@ -10,14 +10,15 @@ namespace DillyzLegacyPack
     class DillyzUtilPatch
     {
         public static byte nextPheonixGhostId = 255;
-        public static void Postfix(DillyzUtil __instance, PlayerControl assassinator, PlayerControl target) {
+        public static void Postfix(DillyzUtil __instance, PlayerControl assassinator, PlayerControl target, bool tp) {
             if (target.PlayerId == nextPheonixGhostId)
             {
                 CustomRole.setRoleName(nextPheonixGhostId, "Phoenix's Ghost");
                 nextPheonixGhostId = 255;
             }
 
-            KillAnimation.SetMovement(assassinator, !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(assassinator) != "TiMEpostor"));
+            if (tp)
+                KillAnimation.SetMovement(assassinator, !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(assassinator) != "TiMEpostor"));
             KillAnimation.SetMovement(target, !(DillyzLegacyPackMain.timeFrozen && DillyzUtil.getRoleName(target) != "TiMEpostor"));
 
             if (assassinator.PlayerId == PlayerControl.LocalPlayer.PlayerId && DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "Phoenix Zero" && DillyzLegacyPackMain.wrath.GameInstance != null)

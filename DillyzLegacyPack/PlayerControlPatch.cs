@@ -14,7 +14,7 @@ namespace DillyzLegacyPack
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnGameEnd))]
         class PlayerControlPatch_OnEndGame {
             public static void Postfix(PlayerControl __instance) {
-                DillyzLegacyPackMain.senseiSwordOut = false;
+                DillyzLegacyPackMain.swordsOut.Clear();
                 DillyzLegacyPackMain.namesPublic.Clear();
                 DillyzLegacyPackMain.timeFrozen = false;
                 DillyzLegacyPackMain.causedTimeEvent = false;

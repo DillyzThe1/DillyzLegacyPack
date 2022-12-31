@@ -30,7 +30,7 @@ namespace DillyzLegacyPack
         public static CustomButton revealbutton;
         public static CustomButton wrath;
         public static CustomRole dictator;
-        public static bool senseiSwordOut = false;
+        public static List<byte> swordsOut = new List<byte>();
         public static bool timeFrozen = false;
         public static bool reversingTime = false;
         public static CustomButton freezetime;
@@ -217,21 +217,28 @@ namespace DillyzLegacyPack
             ssreveal = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.reveal2.png");
             sshide = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.hide.png");
             CustomButton sword = null;
-            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.reveal2.png", 2.5f, false, new string[] { "Sensei" }, empty,
+            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.reveal2.png", 30f, false, new string[] { "Sensei" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
                         return;
 
-                    senseiSwordOut = !senseiSwordOut;
-                    sword.buttonText = senseiSwordOut ? "Stash" : "Reveal";
+                    swordsOut.Add(PlayerControl.LocalPlayer.PlayerId);
+                    sword.buttonText = "Stash";
 
                     if (sword.GameInstance != null)
-                        sword.GameInstance.killButton.graphic.sprite = senseiSwordOut ? sshide : ssreveal;
+                        sword.GameInstance.killButton.graphic.sprite = sshide;
                 }
             );
             sword.buttonText = "Reveal";
             sword.textOutlineColor = sensei.roleColor;
+            sword.SetUseTimeButton(15f, delegate (KillButtonCustomData button, bool interrupted) {
+                swordsOut.Remove(PlayerControl.LocalPlayer.PlayerId);
+                sword.buttonText = "Reveal";
+
+                if (sword.GameInstance != null)
+                    sword.GameInstance.killButton.graphic.sprite = ssreveal;
+            });
             #endregion
 
             #region timepostor
