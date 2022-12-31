@@ -217,7 +217,7 @@ namespace DillyzLegacyPack
             ssreveal = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.reveal2.png");
             sshide = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.hide.png");
             CustomButton sword = null;
-            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.reveal2.png", 30f, false, new string[] { "Sensei" }, empty,
+            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.reveal2.png", 3f, false, new string[] { "Sensei" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)

@@ -12,8 +12,10 @@ namespace DillyzLegacyPack
     class PlayerControlPatch
     {
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnGameEnd))]
-        class PlayerControlPatch_OnEndGame {
-            public static void Postfix(PlayerControl __instance) {
+        class PlayerControlPatch_OnEndGame
+        {
+            public static void Postfix(PlayerControl __instance)
+            {
                 DillyzLegacyPackMain.swordsOut.Clear();
                 DillyzLegacyPackMain.namesPublic.Clear();
                 DillyzLegacyPackMain.timeFrozen = false;
@@ -42,6 +44,10 @@ namespace DillyzLegacyPack
                 ro.spr = __instance.gameObject.transform.Find("BodyForms").transform.Find("Normal").gameObject.GetComponent<SpriteRenderer>();
                 ro.anim = __instance.gameObject.GetComponent<Animator>();
                 ro.pc = __instance;
+
+                GameObject katanaobject = new GameObject();
+                KatanaObject katana = katanaobject.AddComponent<KatanaObject>();
+                katana.Setup(__instance);
             }
         }
 
@@ -50,6 +56,8 @@ namespace DillyzLegacyPack
         {
             public static void Postfix(PlayerControl __instance)
             {
+                if (!DillyzLegacyPackMain.reversingTime)
+                    return;
                 try
                 {
                     // cosmetic flip
