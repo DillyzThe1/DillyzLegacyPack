@@ -40,11 +40,11 @@ namespace DillyzLegacyPack
         }
 
         void Update()
-        {
+        { 
             if (!setup)
                 return;
 
-            this._enabled = (DillyzLegacyPackMain.swordsOut.Contains(pc.PlayerId) || DillyzUtil.InFreeplay()) && !pc.Data.IsDead;
+            this._enabled = DillyzLegacyPackMain.swordsOut.Contains(pc.PlayerId) && !pc.Data.IsDead;
             this.rend.enabled = this._enabled;
 
             this.transform.position = this.pc.transform.position;
