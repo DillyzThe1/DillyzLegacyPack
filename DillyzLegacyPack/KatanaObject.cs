@@ -43,7 +43,7 @@ namespace DillyzLegacyPack
             if (this.pc != null && this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId) {
                 DillyzUtil.InvokeRPCCall("sensei_katana_swing", delegate (MessageWriter writer) {
                     writer.Write(this.pc.PlayerId);
-                    writer.Write((int)Mathf.RoundToInt(lastAngle * 100f));
+                    writer.Write(Mathf.RoundToInt(lastAngle * 100f));
                 }); 
             }
 
@@ -64,7 +64,7 @@ namespace DillyzLegacyPack
         }
 
         void Update() { 
-            if (!setup)
+            if (!setup || this.pc == null)
                 return;
 
             this._enabled = DillyzLegacyPackMain.swordsOut.Contains(pc.PlayerId) && !pc.Data.IsDead;
@@ -126,7 +126,8 @@ namespace DillyzLegacyPack
                 return;
             PlayerControl target = tag.gameObject.GetComponent<PlayerControl>();
 
-            if (this.enabled && target != null && !target.Data.IsDead && !target.inVent && target.PlayerId != PlayerControl.LocalPlayer.PlayerId && !DillyzLegacyPackMain.reversingTime)
+            if (this.enabled && target != null && !target.Data.IsDead && !target.inVent && target.PlayerId != PlayerControl.LocalPlayer.PlayerId 
+                                                && !DillyzLegacyPackMain.reversingTime && this.pc != null && this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                 DillyzUtil.RpcCommitAssassination(pc, target, false);
         }
     }

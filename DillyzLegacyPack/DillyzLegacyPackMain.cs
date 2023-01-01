@@ -385,7 +385,7 @@ namespace DillyzLegacyPack
             });
             DillyzUtil.AddRpcCall("sensei_katana_swing", delegate (MessageReader reader) {
                 byte p = reader.ReadByte();
-                float rottolerpto = reader.ReadInt32() / 100f;
+                float rottolerpto = (float)reader.ReadInt32() / 100f;
                 KatanaObject katana = KatanaObject.getByPlayerId(p);
                 if (katana == null)
                     return;
