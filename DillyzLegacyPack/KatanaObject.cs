@@ -1,4 +1,5 @@
 ﻿using DillyzRoleApi_Rewritten;
+using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,21 +27,43 @@ namespace DillyzLegacyPack
         bool _enabled = false;
         public bool enabled => _enabled;
 
-        float lastangle = 0f;
+        float lastAngle = 0f;
+        float curLerp = 0f;
 
-        void UpdateAngle(float funnyangle) {
-            lastangle = funnyangle;
-            float degrees = lastangle * (180f / (float)Math.PI);
+        public static KatanaObject getByPlayerId(byte playerId) {
+            foreach (KatanaObject obj in allObjects)
+                if (obj.pc != null && obj.pc.PlayerId == playerId)
+                    return obj;
+            return null;
+        }
+
+        public void UpdateAngle(float funnyangle) {
+            lastAngle = funnyangle;
+
+            if (this.pc != null && this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId) {
+                DillyzUtil.InvokeRPCCall("sensei_katana_swing", delegate (MessageWriter writer) {
+                    writer.Write(this.pc.PlayerId);
+                    writer.Write((int)Mathf.RoundToInt(lastAngle * 100f));
+                }); 
+            }
+
+            // DOING THIS BC LOCAL ROTATION HATES ME
+            float degrees = lastAngle * (180f / (float)Math.PI);
             rend.flipX = !(degrees < -90 || degrees > 90);
             Quaternion rot = Quaternion.Euler(0f, 0f, degrees - 90);
-            // this code made me want to a bridge
-            float bruh = lastangle;
-            this.transform.position += (new Vector3(Mathf.Cos(bruh), Mathf.Sin(bruh), 0f) * distfromplayer);
             this.transform.localRotation = rot;
         }
 
-        void Update()
-        { 
+        void UpdateDegrees(float rawAngle) { //, float degrees) {
+            //float degrees = lastangle * (180f / (float)Math.PI);
+            //rend.flipX = !(degrees < -90 || degrees > 90);
+            //Quaternion rot = Quaternion.Euler(0f, 0f, degrees - 90);
+            // this code made me want to a bridge 
+            this.transform.position += (new Vector3(Mathf.Cos(rawAngle), Mathf.Sin(rawAngle), 0f) * distfromplayer);
+            //this.transform.localRotation = rot; 
+        }
+
+        void Update() { 
             if (!setup)
                 return;
 
@@ -53,9 +76,24 @@ namespace DillyzLegacyPack
             {
                 Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.pc.transform.position;
                 UpdateAngle(Mathf.Atan2(pos.y, pos.x));
-                return;
             }
-            UpdateAngle(lastangle);
+            else
+                UpdateAngle(lastAngle);
+
+            float goober = Time.deltaTime * 16.5f;
+            float bruh = (180f / (float)Math.PI);
+            float lastangcalc = (lastAngle * bruh);
+            float lastlerpcalc = (curLerp * bruh);
+            if (lastlerpcalc > 120 && lastangcalc < -120) // up to dwn
+                curLerp = lastAngle;
+            else if (lastlerpcalc < -120 && lastangcalc > 120) // down to p
+                curLerp = lastAngle;
+
+            curLerp = Mathf.Lerp(curLerp, lastAngle, goober);
+
+            if (this.pc != null)
+                this.pc.name = goober + " " + lastangcalc + " " + lastlerpcalc;
+            UpdateDegrees(curLerp);//, curLerp * (180f / (float)Math.PI));
         }
 
         public void Setup(PlayerControl pc) {

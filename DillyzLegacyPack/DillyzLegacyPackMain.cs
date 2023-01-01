@@ -214,10 +214,11 @@ namespace DillyzLegacyPack
             sensei.SetSprite(assembly, "DillyzLegacyPack.Assets.sensei.png");
 
 
-            ssreveal = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.reveal2.png");
-            sshide = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.hide.png");
+            // FLIPPING THEM BC YES
+            ssreveal = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.hide.png");
+            sshide = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.reveal2.png");
             CustomButton sword = null;
-            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.reveal2.png", 3f, false, new string[] { "Sensei" }, empty,
+            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.hide.png", 3f, false, new string[] { "Sensei" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -228,6 +229,11 @@ namespace DillyzLegacyPack
 
                     if (sword.GameInstance != null)
                         sword.GameInstance.killButton.graphic.sprite = sshide;
+
+                    DillyzUtil.InvokeRPCCall("sensei_katana", delegate (MessageWriter writer) {
+                        writer.Write(true);
+                        writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    });
                 }
             );
             sword.buttonText = "Reveal";
@@ -238,6 +244,10 @@ namespace DillyzLegacyPack
 
                 if (sword.GameInstance != null)
                     sword.GameInstance.killButton.graphic.sprite = ssreveal;
+                DillyzUtil.InvokeRPCCall("sensei_katana", delegate (MessageWriter writer) {
+                    writer.Write(false);
+                    writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                });
             });
             #endregion
 
@@ -361,6 +371,25 @@ namespace DillyzLegacyPack
             });
             DillyzUtil.AddRpcCall("dictate_vote", delegate(MessageReader reader) {
                 MeetingHudPatch.dictatedVotes.Add(reader.ReadByte());
+            });
+            DillyzUtil.AddRpcCall("sensei_katana", delegate (MessageReader reader) {
+                bool active = reader.ReadBoolean();
+                byte p = reader.ReadByte();
+
+                if (active)
+                {
+                    swordsOut.Add(p);
+                    return;
+                }
+                swordsOut.Remove(p);
+            });
+            DillyzUtil.AddRpcCall("sensei_katana_swing", delegate (MessageReader reader) {
+                byte p = reader.ReadByte();
+                float rottolerpto = reader.ReadInt32() / 100f;
+                KatanaObject katana = KatanaObject.getByPlayerId(p);
+                if (katana == null)
+                    return;
+                katana.UpdateAngle(rottolerpto);
             });
             #endregion
 
