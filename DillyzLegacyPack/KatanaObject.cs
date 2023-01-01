@@ -136,12 +136,7 @@ namespace DillyzLegacyPack
                                                 && !DillyzLegacyPackMain.reversingTime && this.pc != null && this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             { 
                 DillyzUtil.RpcCommitAssassination(pc, target, false);
-
-                if (DillyzLegacyPackMain.sword.GameInstance == null)
-                    return;
-                DillyzLegacyPackMain.sword.GameInstance.useTimerMode = false;
-                DillyzLegacyPackMain.sword.GameInstance.lastUse = DateTime.UtcNow;
-                DillyzLegacyPackMain.sword.GameInstance.killButton.cooldownTimerText.color = Palette.White;
+                DillyzLegacyPackMain.sword.GameInstance?.InterruptUseTimer();
             }
         }
     }
