@@ -255,7 +255,7 @@ namespace DillyzLegacyPack
                         return;
 
                     causedTimeEvent = true;
-                    reversingTime = true;
+                    reversingTime = false;
                     Log.LogInfo("Freeze time.");
                     FreezeTime(true);
                     DillyzUtil.InvokeRPCCall("time_freeze", delegate (MessageWriter writer) { writer.Write(true); });
@@ -331,6 +331,7 @@ namespace DillyzLegacyPack
             DillyzUtil.AddRpcCall("time_freeze", delegate(MessageReader reader) {
                 bool active = reader.ReadBoolean();
                 FreezeTime(active);
+                reversingTime = false;
 
                 if (DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "TiMEpostor" && freezetime.GameInstance != null)
                 {
