@@ -40,7 +40,7 @@ namespace DillyzLegacyPack
         public void UpdateAngle(float funnyangle) {
             lastAngle = funnyangle;
 
-            if (this.pc != null && this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId) {
+            if (this.pc != null && this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId && this.enabled && !DillyzUtil.InFreeplay()) {
                 DillyzUtil.InvokeRPCCall("sensei_katana_swing", delegate (MessageWriter writer) {
                     writer.Write(this.pc.PlayerId);
                     writer.Write(Mathf.RoundToInt(lastAngle * 100f));
@@ -118,6 +118,12 @@ namespace DillyzLegacyPack
 
 
             setup = true;
+
+            allObjects.Add(this);
+        }
+
+        void OnDestroy() {
+            allObjects.Remove(this);
         }
 
         void OnTriggerEnter2D(Collider2D tag)
@@ -126,9 +132,17 @@ namespace DillyzLegacyPack
                 return;
             PlayerControl target = tag.gameObject.GetComponent<PlayerControl>();
 
-            if (this.enabled && target != null && !target.Data.IsDead && !target.inVent && target.PlayerId != PlayerControl.LocalPlayer.PlayerId 
+            if (this.enabled && target != null && !target.Data.IsDead && !target.inVent && target.PlayerId != PlayerControl.LocalPlayer.PlayerId
                                                 && !DillyzLegacyPackMain.reversingTime && this.pc != null && this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            { 
                 DillyzUtil.RpcCommitAssassination(pc, target, false);
+
+                if (DillyzLegacyPackMain.sword.GameInstance == null)
+                    return;
+                DillyzLegacyPackMain.sword.GameInstance.useTimerMode = false;
+                DillyzLegacyPackMain.sword.GameInstance.lastUse = DateTime.UtcNow;
+                DillyzLegacyPackMain.sword.GameInstance.killButton.cooldownTimerText.color = Palette.White;
+            }
         }
     }
 }

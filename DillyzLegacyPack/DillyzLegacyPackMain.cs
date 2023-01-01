@@ -30,6 +30,7 @@ namespace DillyzLegacyPack
         public static CustomButton revealbutton;
         public static CustomButton wrath;
         public static CustomRole dictator;
+        public static CustomButton sword;
         public static List<byte> swordsOut = new List<byte>();
         public static bool timeFrozen = false;
         public static bool reversingTime = false;
@@ -217,7 +218,6 @@ namespace DillyzLegacyPack
             // FLIPPING THEM BC YES
             ssreveal = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.reveal2.png");
             sshide = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.hide.png");
-            CustomButton sword = null;
             sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.hide.png", 3f, false, new string[] { "Sensei" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
@@ -388,7 +388,10 @@ namespace DillyzLegacyPack
                 float rottolerpto = (float)reader.ReadInt32() / 100f;
                 KatanaObject katana = KatanaObject.getByPlayerId(p);
                 if (katana == null)
+                {
+                    DillyzLegacyPackMain.Instance.Log.LogError("uhhhhhhh cannot find player " + p + " lmao (rot " + rottolerpto + ")");
                     return;
+                }
                 katana.UpdateAngle(rottolerpto);
             });
             #endregion
