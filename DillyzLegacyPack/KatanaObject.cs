@@ -91,8 +91,8 @@ namespace DillyzLegacyPack
 
             curLerp = Mathf.Lerp(curLerp, lastAngle, goober);
 
-            if (this.pc != null)
-                this.pc.name = goober + " " + lastangcalc + " " + lastlerpcalc;
+            //if (this.pc != null)
+            //    this.pc.name = goober + " " + lastangcalc + " " + lastlerpcalc;
             UpdateDegrees(curLerp);//, curLerp * (180f / (float)Math.PI));
         }
 
