@@ -29,6 +29,7 @@ namespace DillyzLegacyPack
         public static CustomRole phoenixzero;
         public static CustomButton revealbutton;
         public static CustomButton wrath;
+        public static CustomButton communicate;
         public static CustomRole dictator;
         public static CustomButton sword;
         public static List<byte> swordsOut = new List<byte>();
@@ -130,7 +131,6 @@ namespace DillyzLegacyPack
             wrath.buttonText = "Wrath";
             wrath.textOutlineColor = phoenix.roleColor;
 
-            CustomButton communicate = null;
             communicate = DillyzUtil.addButton(assembly, "Phoenix Communicate", "DillyzLegacyPack.Assets.communicate.png", 35f, true, access_phoenixzero, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {

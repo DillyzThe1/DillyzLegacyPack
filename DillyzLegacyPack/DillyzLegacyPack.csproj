@@ -55,6 +55,7 @@
     <Compile Include="PlayerVoteAreaPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecordedObject.cs" />
+    <Compile Include="ShipStatusPatch.cs" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>xcopy ".\$(AssemblyName).dll" "%25AmongUsModDir%25\BepInEx\plugins\" /y

@@ -22,6 +22,13 @@ namespace DillyzLegacyPack
             DillyzLegacyPackMain.reversingTime = false;
             DillyzLegacyPackMain.dictationsDone = 0;
             DillyzLegacyPackMain.phoenixLingeringEffect.Clear();
+
+            if (DillyzLegacyPackMain.wrath.GameInstance != null)
+                DillyzLegacyPackMain.wrath.GameInstance.blockingButton = DillyzLegacyPackMain.wrath.GameInstance.showIconOnBlocked = false;
+            if (DillyzLegacyPackMain.revealbutton.GameInstance != null)
+                DillyzLegacyPackMain.revealbutton.GameInstance.blockingButton = DillyzLegacyPackMain.revealbutton.GameInstance.showIconOnBlocked = false;
+            if (DillyzLegacyPackMain.communicate.GameInstance != null)
+                DillyzLegacyPackMain.communicate.GameInstance.blockingButton = DillyzLegacyPackMain.communicate.GameInstance.showIconOnBlocked = false;
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnGameEnd))]
         class PlayerControlPatch_OnEndGame
