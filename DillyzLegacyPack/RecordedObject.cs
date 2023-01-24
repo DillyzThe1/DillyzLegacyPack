@@ -1,4 +1,5 @@
-﻿using DillyzRoleApi_Rewritten;
+﻿using AmongUs.GameOptions;
+using DillyzRoleApi_Rewritten;
 using Il2CppSystem.Linq.Expressions;
 using System;
 using System.Collections.Generic;
@@ -111,8 +112,23 @@ namespace DillyzLegacyPack
                     this.pc.inVent = storedTime.inVent;
                     this.pc.Visible = !storedTime.inVent;
                 }
-                if (DillyzUtil.getRoleName(this.pc) != storedTime.role)
-                    CustomRole.setRoleName(this.pc.PlayerId, storedTime.role);
+                if (this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId && DillyzUtil.getRoleName(this.pc) != storedTime.role)
+                {
+                    CustomRole rollleeeeeeeeee = CustomRole.getByName(storedTime.role);
+                    bool beimp = (storedTime.role == "Impostor" || storedTime.role == "ShapeShifter" || (rollleeeeeeeeee != null && rollleeeeeeeeee.switchToImpostor));
+                    if (beimp)
+                        this.pc.RpcSetRole(RoleTypes.Impostor);
+                    else
+                        this.pc.RpcSetRole(RoleTypes.Crewmate);
+
+
+                    //ShipStatus.Instance.Begin();
+                    this.pc.SetTasks(this.pc.Data.Tasks);
+
+                    DillyzLegacyPackMain.Instance.Log.LogInfo(storedTime.role + " is a" + (beimp ? "n Impostor" : " Crewmate") + " role.");
+
+                    DillyzUtil.RpcSetRole(this.pc, storedTime.role);
+                }
                 if (this.pc.Data.IsDead != storedTime.isDead)
                 {
                     if (storedTime.isDead)
