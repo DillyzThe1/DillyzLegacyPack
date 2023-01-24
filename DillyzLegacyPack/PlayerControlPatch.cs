@@ -21,6 +21,7 @@ namespace DillyzLegacyPack
             DillyzLegacyPackMain.causedTimeEvent = false;
             DillyzLegacyPackMain.reversingTime = false;
             DillyzLegacyPackMain.dictationsDone = 0;
+            DillyzLegacyPackMain.phoenixLingeringEffect.Clear();
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnGameEnd))]
         class PlayerControlPatch_OnEndGame
@@ -62,6 +63,20 @@ namespace DillyzLegacyPack
             {
                 if (AmongUsClient.Instance.AmHost && DillyzUtil.getRoleName(__instance) == "Phoenix's Ghost")
                     DillyzUtil.RpcSetRole(__instance, "Phoenix Zero");
+            }
+        }
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
+        class PlayerControlPatch_RpcSendChat
+        {
+            public static bool Prefix(PlayerControl __instance, string chatText)
+            {
+                if (DillyzLegacyPackMain.phoenixLingeringEffect.Contains(__instance.PlayerId))
+                {
+                    if (MeetingHud.Instance != null && ChatControllerPatch.Instance != null)
+                        ChatControllerPatch.Instance.AddChatWarning("You've been revived by the Phoenix.\nChatting is disabled.");
+                    return false;
+                }
+                return true;
             }
         }
 

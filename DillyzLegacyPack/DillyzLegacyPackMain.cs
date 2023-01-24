@@ -39,6 +39,7 @@ namespace DillyzLegacyPack
         public static bool causedTimeEvent = false;
         public static DateTime timeReversedOn = DateTime.MinValue;
         public static int dictationsDone = 0;
+        public static List<byte> phoenixLingeringEffect = new List<byte>();
 
 
         public static Sprite ssreveal;
@@ -425,6 +426,8 @@ namespace DillyzLegacyPack
         public static void SecondChance(PlayerControl player, bool rpc) {
             player.Revive();
             byte randomness = 0;
+
+            DillyzLegacyPackMain.phoenixLingeringEffect.Add(player.PlayerId);
 
             switch (ShipStatus.Instance.name.ToLower().Replace("(clone)", ""))
             {
