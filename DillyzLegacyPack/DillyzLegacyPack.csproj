@@ -46,6 +46,7 @@
     <Compile Include="DeadBodyPatch.cs" />
     <Compile Include="DillyzLegacyPackMain.cs" />
     <Compile Include="DillyzUtilPatch.cs" />
+    <Compile Include="FlashOverlay.cs" />
     <Compile Include="GameManagerPatch.cs" />
     <Compile Include="HudManagerPatch.cs" />
     <Compile Include="KatanaObject.cs" />
@@ -515,6 +516,9 @@ start "Among Us" "%25AmongUsModDir%25/Among Us.exe"</PostBuildEvent>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\katana kitchen knife.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\ice.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

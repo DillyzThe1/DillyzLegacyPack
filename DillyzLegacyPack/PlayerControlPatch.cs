@@ -29,6 +29,9 @@ namespace DillyzLegacyPack
                 DillyzLegacyPackMain.revealbutton.GameInstance.blockingButton = DillyzLegacyPackMain.revealbutton.GameInstance.showIconOnBlocked = false;
             if (DillyzLegacyPackMain.communicate.GameInstance != null)
                 DillyzLegacyPackMain.communicate.GameInstance.blockingButton = DillyzLegacyPackMain.communicate.GameInstance.showIconOnBlocked = false;
+
+            if (ShipStatusPatch.frozenOverlay != null && ShipStatusPatch.frozenOverlay.gameObject != null && ShipStatusPatch.frozenOverlay.sprrend != null)
+                ShipStatusPatch.frozenOverlay.SetStaticColor(new Color(1f, 1f, 1f, 0f));
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnGameEnd))]
         class PlayerControlPatch_OnEndGame
