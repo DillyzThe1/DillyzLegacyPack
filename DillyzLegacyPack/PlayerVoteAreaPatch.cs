@@ -110,21 +110,22 @@ namespace DillyzLegacyPack
                         __instance.Buttons.SetActive(true);
                         DictateSpr.enabled = true;
                         DictateButton.transform.Find("ControllerHighlight").gameObject.GetComponent<SpriteRenderer>().enabled = true;
-                        float startPos = __instance.AnimateButtonsFromLeft ? 0.2f : 1.95f;
+                        float startPos = __instance.AnimateButtonsFromLeft ? 0.25f : 1.95f;
+                        float endOffset = __instance.AnimateButtonsFromLeft ? 0.4f : 0f;
                         DictateButton.transform.localPosition = new Vector3(startPos, 0f, 0f);
                         __instance.StartCoroutine(Effects.All(new IEnumerator[]
                         {
                             Effects.Lerp(0.25f, (Il2CppSystem.Action<float>)delegate(float t)
                             {
-                                __instance.CancelButton.transform.localPosition = Vector2.Lerp(Vector2.right * startPos, Vector2.right * 1.3f, Effects.ExpOut(t));
+                                __instance.CancelButton.transform.localPosition = Vector2.Lerp(Vector2.right * startPos, (Vector2.right * 1.3f) + new Vector2(endOffset, 0f), Effects.ExpOut(t));
                             }),
                             Effects.Lerp(0.35f, (Il2CppSystem.Action<float>)delegate(float t)
                             {
-                                __instance.ConfirmButton.transform.localPosition = Vector2.Lerp(Vector2.right * startPos, Vector2.right * 0.65f, Effects.ExpOut(t));
+                                __instance.ConfirmButton.transform.localPosition = Vector2.Lerp(Vector2.right * startPos, (Vector2.right * 0.65f) + new Vector2(endOffset, 0f), Effects.ExpOut(t));
                             }),
                             Effects.Lerp(0.45f, (Il2CppSystem.Action<float>)delegate(float t)
                             {
-                                DictateButton.transform.localPosition = Vector2.Lerp(Vector2.right * startPos, Vector2.zero, Effects.ExpOut(t));
+                                DictateButton.transform.localPosition = Vector2.Lerp(Vector2.right * startPos, new Vector2(endOffset, 0f), Effects.ExpOut(t));
                             })
                         }));
                         List<UiElement> selectableElements = new List<UiElement>();
