@@ -76,10 +76,10 @@ namespace DillyzLegacyPack
             CustomRole phoenix = DillyzUtil.createRole("Phoenix", "Reveal your hidden power.", true, false, new Color32(225, 65, 25, 255), false,
                 CustomRoleSide.Crewmate, VentPrivilege.None, false, true);
             phoenix.a_or_an = "a";
-            phoenix.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
+            phoenix.SetSprite(assembly, "DillyzLegacyPack.Assets.phoenix.png");
             phoenix.roletoGhostInto = "Phoenix's Ghost";
 
-            CustomButton advice = DillyzUtil.addButton(assembly, "Take Advice", "DillyzLegacyPack.Assets.dillyzthe1.png", 60f, false, empty, empty,
+            CustomButton advice = DillyzUtil.addButton(assembly, "Take Advice", "DillyzLegacyPack.Assets.phoenix.png", 60f, false, empty, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -257,7 +257,7 @@ namespace DillyzLegacyPack
             CustomRole timepostor = DillyzUtil.createRole("TiMEpostor", "Manipulate the time line.", true, false, new Color32(85, 50, 225, 255), true,
                 CustomRoleSide.Impostor, VentPrivilege.Impostor, true, true);
             timepostor.a_or_an = "a";
-            timepostor.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
+            timepostor.SetSprite(assembly, "DillyzLegacyPack.Assets.timepostor.png");
 
             freezetime = DillyzUtil.addButton(assembly, "Freeze Time", "DillyzLegacyPack.Assets.freeze.png", 35f, false, new string[] { "TiMEpostor" }, empty,
                 delegate (KillButtonCustomData button, bool success)
@@ -315,7 +315,7 @@ namespace DillyzLegacyPack
             dictator = DillyzUtil.createRole("Dictator", "Dictate the crew's votes.", true, false, new Color32(255, 100, 50, 255), false, CustomRoleSide.Crewmate,
                                                                                                                                         VentPrivilege.None, false, true);
             dictator.a_or_an = "a";
-            dictator.SetSprite(assembly, "DillyzLegacyPack.Assets.dillyzthe1.png");
+            dictator.SetSprite(assembly, "DillyzLegacyPack.Assets.dictator.png");
             #endregion
 
             #region rpc
