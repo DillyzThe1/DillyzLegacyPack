@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.IL2CPP;
 using DillyzRoleApi_Rewritten;
 using HarmonyLib;
 using Hazel;
-using Iced.Intel;
-using Il2CppSystem.Runtime.CompilerServices;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace DillyzLegacyPack
 {
@@ -79,18 +73,6 @@ namespace DillyzLegacyPack
             phoenix.blurb = "The Phoenix is a role which helps the crewmates in the afterlife. Once they're dead, they can revive with a second chance and try to kill someone or revive an unknown nearby ghost. The Phoenix may try to reveal themselves, however, all abilities have a use limit.\n\ngithub.com/DillyzThe1";
             phoenix.SetSprite(assembly, "DillyzLegacyPack.Assets.phoenix.png");
             phoenix.roletoGhostInto = "Phoenix's Ghost";
-
-            CustomButton advice = DillyzUtil.addButton(assembly, "Take Advice", "DillyzLegacyPack.Assets.phoenix.png", 60f, false, empty, empty,
-                delegate (KillButtonCustomData button, bool success)
-                {
-                    if (!success)
-                        return;
-
-                    DillyzUtil.RpcCommitAssassination(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer);
-                }
-            );
-            advice.textOutlineColor = phoenix.roleColor;
-
 
             // ghost Phoenix
             CustomRole phoenixghost = DillyzUtil.createRole("Phoenix's Ghost", "Come back to play.", true, false, new Color32(245, 100, 85, 255), false,
@@ -311,7 +293,6 @@ namespace DillyzLegacyPack
                     DillyzUtil.InvokeRPCCall("time_reverse", delegate (MessageWriter writer) { writer.Write(false); });
                 }
             });
-
             #endregion
 
             #region dictator
@@ -339,9 +320,6 @@ namespace DillyzLegacyPack
                     namesPublic.Remove(p.PlayerId);
                     p.ToggleHighlight(false, RoleTeamTypes.Crewmate);
                 }
-
-                //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Outline", phoenixzero.nameColorPublic ? 2f : 0f);
-                //  targetPhoenix.gameObject.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", DillyzUtil.color32ToColor(phoenixzero.roleColor));
             });
             DillyzUtil.AddRpcCall("time_freeze", delegate(MessageReader reader) {
                 bool active = reader.ReadBoolean();
@@ -403,8 +381,6 @@ namespace DillyzLegacyPack
 
             #region settings
             // -- Phoenix --
-            //phoenix.AddAdvancedSetting_Boolean("Suicide Button", false, delegate (bool v) { advice.allowedRoles.Clear(); if (v) advice.allowedRoles.Add(phoenix.name); });
-            //phoenix.AddAdvancedSetting_String("2nd Chance Allowed", chanceMode, new string[] { "Tasks Done", "Death", "Meeting Over", "Exile Only", "Kill Only" }, delegate (string v) { chanceMode = v; });
             phoenix.AddAdvancedSetting_Float("Wrath Cooldown", 15, 5, 75, 5, delegate (float v) { wrath.cooldown = v; }).suffix = "s";
             phoenix.AddAdvancedSetting_String("Wrath Disabled On", wrathDisables, new string[] { "Any Kill", "Impostor Kill", "Crewmate Kill", "Other Kill", "Non-Crew Kill", "None"}, delegate(string v) { wrathDisables = v; });
             phoenix.AddAdvancedSetting_Float("Comm. Cooldown", 35, 5, 100, 5, delegate(float v) { communicate.cooldown = v; }).suffix = "s";

@@ -1,12 +1,6 @@
-﻿using Cpp2IL.Core.Analysis.ResultModels;
-using DillyzRoleApi_Rewritten;
+﻿using DillyzRoleApi_Rewritten;
 using HarmonyLib;
 using InnerNet;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace DillyzLegacyPack

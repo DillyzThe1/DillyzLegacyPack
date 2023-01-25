@@ -1,13 +1,9 @@
 ﻿using AmongUs.GameOptions;
 using DillyzRoleApi_Rewritten;
-using Il2CppSystem.Linq.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace DillyzLegacyPack
 {
@@ -50,11 +46,7 @@ namespace DillyzLegacyPack
 
         void RewindFrame() {
             if (timeStores.Count <= 0)
-            {
-               // if (rb2d != null)
-                //    rb2d.velocity = Vector2.zero;
                 return;
-            }
 
             if (rb2d != null)
                 rb2d.isKinematic = true;
@@ -62,14 +54,13 @@ namespace DillyzLegacyPack
             TimeStore storedTime = timeStores[timeStores.Count - 1];
             TimeSpan timestart = storedTime.savepoint - DillyzLegacyPackMain.timeReversedOn;
 
-            //DillyzLegacyPackMain.reversetime.buttonText = timestart.TotalMilliseconds.ToString();
             if (timestart.TotalMilliseconds > 0)
                 return;
 
             this.transform.position = storedTime.position;
             this.transform.rotation = storedTime.rotation;
-            if (rb2d != null)// && storedTime.velocity != null)
-                this.rb2d.velocity = Vector2.zero;// storedTime.velocity;
+            if (rb2d != null)
+                this.rb2d.velocity = Vector2.zero;
             TimeSpan timeDiff = storedTime.savepoint - creation;
             if (spr != null)
                 spr.flipX = storedTime.flipX;
@@ -121,12 +112,8 @@ namespace DillyzLegacyPack
                     else
                         this.pc.RpcSetRole(RoleTypes.Crewmate);
 
-
-                    //ShipStatus.Instance.Begin();
                     this.pc.SetTasks(this.pc.Data.Tasks);
-
                     DillyzLegacyPackMain.Instance.Log.LogInfo(storedTime.role + " is a" + (beimp ? "n Impostor" : " Crewmate") + " role.");
-
                     DillyzUtil.RpcSetRole(this.pc, storedTime.role);
                 }
                 if (this.pc.Data.IsDead != storedTime.isDead)

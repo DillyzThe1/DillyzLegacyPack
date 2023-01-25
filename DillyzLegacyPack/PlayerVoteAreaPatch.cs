@@ -3,10 +3,6 @@ using HarmonyLib;
 using Hazel;
 using Il2CppSystem.Collections;
 using Il2CppSystem.Collections.Generic;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -56,27 +52,12 @@ namespace DillyzLegacyPack
             }
         }
 
-       /* [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.OnDestroy))]
-        class PlayerVoteAreaPatch_OnDestroy
-        {
-            public static void Prefix(PlayerVoteArea __instance)
-            {
-                if (DictateButtons == null)
-                    return;
-                if (DictateButtons.values != null)
-                    foreach (UiElement button in DictateButtons.values)
-                        if (button != null)
-                            GameObject.Destroy(button.gameObject);
-                DictateButtons.Clear();
-            }
-        }*/
-
         [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.Select))]
         class PlayerVoteAreaPatch_Select
         {
             public static bool Prefix(PlayerVoteArea __instance)
             {
-                UiElement DictateButton = null;// DictateButtons[__instance.TargetPlayerId];
+                UiElement DictateButton = null;
 
                 foreach (UiElement button in __instance.Buttons.GetComponentsInChildren<UiElement>())
                     if (button.gameObject.name == "DictateButton")

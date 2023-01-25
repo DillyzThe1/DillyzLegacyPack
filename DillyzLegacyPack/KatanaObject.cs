@@ -2,10 +2,7 @@
 using Hazel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace DillyzLegacyPack
@@ -54,13 +51,8 @@ namespace DillyzLegacyPack
             this.transform.localRotation = rot;
         }
 
-        void UpdateDegrees(float rawAngle) { //, float degrees) {
-            //float degrees = lastangle * (180f / (float)Math.PI);
-            //rend.flipX = !(degrees < -90 || degrees > 90);
-            //Quaternion rot = Quaternion.Euler(0f, 0f, degrees - 90);
-            // this code made me want to a bridge 
+        void UpdateDegrees(float rawAngle) {
             this.transform.position += (new Vector3(Mathf.Cos(rawAngle), Mathf.Sin(rawAngle), 0f) * distfromplayer);
-            //this.transform.localRotation = rot; 
         }
 
         void Update() { 
@@ -88,37 +80,27 @@ namespace DillyzLegacyPack
                 curLerp = lastAngle;
             else if (lastlerpcalc < -120 && lastangcalc > 120) // down to p
                 curLerp = lastAngle;
-
             curLerp = Mathf.Lerp(curLerp, lastAngle, goober);
-
-            //if (this.pc != null)
-            //    this.pc.name = goober + " " + lastangcalc + " " + lastlerpcalc;
-            UpdateDegrees(curLerp);//, curLerp * (180f / (float)Math.PI));
+            UpdateDegrees(curLerp);
         }
 
         public void Setup(PlayerControl pc) {
             this.pc = pc;
-            //this.pc.SetPlayerMaterialColors(rend);
             this.transform.parent = this.pc.transform;
-
             this.transform.localScale = Vector3.one * 0.375f;
 
             this.gameObject.name = "katana";
             this.rend = this.gameObject.AddComponent<SpriteRenderer>();
-            //this.rend.material = new Material(Shader.Find("Unlit/PlayerShader"));
             this.rend.sprite = DillyzUtil.getSprite(Assembly.GetExecutingAssembly(), "DillyzLegacyPack.Assets.katana kitchen knife.png");
 
             this.col2d = this.gameObject.AddComponent<BoxCollider2D>();
             this.col2d.isTrigger = true;
-            this.col2d.size = new Vector2(0.025f, 0.15f);//new Vector2(this.col2d.size.x * 0.15f, this.col2d.size.y * 0.85f);
-            //this.col2d.enabled = (this.pc.PlayerId == PlayerControl.LocalPlayer.PlayerId);
+            this.col2d.size = new Vector2(0.025f, 0.15f);
 
             this.rec = this.gameObject.AddComponent<RecordedObject>();
             this.rec.spr = this.rend;
 
-
             setup = true;
-
             allObjects.Add(this);
         }
 
@@ -126,8 +108,7 @@ namespace DillyzLegacyPack
             allObjects.Remove(this);
         }
 
-        void OnTriggerEnter2D(Collider2D tag)
-        {
+        void OnTriggerEnter2D(Collider2D tag) {
             if (!setup)
                 return;
             PlayerControl target = tag.gameObject.GetComponent<PlayerControl>();
