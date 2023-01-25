@@ -14,8 +14,6 @@ namespace DillyzLegacyPack
 {
     class PlayerVoteAreaPatch
     {
-        public static Dictionary<byte, UiElement> DictateButtons = new Dictionary<byte, UiElement>();
-
         public static bool IsDictator() {
             return DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == DillyzLegacyPackMain.dictator.name;
         }
@@ -55,12 +53,10 @@ namespace DillyzLegacyPack
 
                     __instance.ConfirmButton.gameObject.GetComponent<PassiveButton>().OnClick.Invoke();
                 }
-
-                DictateButtons[__instance.TargetPlayerId] = DictateButton;
             }
         }
 
-        [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.OnDestroy))]
+       /* [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.OnDestroy))]
         class PlayerVoteAreaPatch_OnDestroy
         {
             public static void Prefix(PlayerVoteArea __instance)
@@ -73,14 +69,25 @@ namespace DillyzLegacyPack
                             GameObject.Destroy(button.gameObject);
                 DictateButtons.Clear();
             }
-        }
+        }*/
 
         [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.Select))]
         class PlayerVoteAreaPatch_Select
         {
             public static bool Prefix(PlayerVoteArea __instance)
             {
-                UiElement DictateButton = DictateButtons[__instance.TargetPlayerId];
+                UiElement DictateButton = null;// DictateButtons[__instance.TargetPlayerId];
+
+                foreach (UiElement button in __instance.Buttons.GetComponentsInChildren<UiElement>())
+                    if (button.gameObject.name == "DictateButton")
+                    {
+                        DictateButton = button;
+                        break;
+                    }
+
+                if (DictateButton == null)
+                    return true;
+
                 SpriteRenderer DictateSpr = DictateButton.gameObject.GetComponent<SpriteRenderer>();
 
                 DictateSpr.enabled = false;
@@ -100,8 +107,6 @@ namespace DillyzLegacyPack
 
                     if (!__instance.voteComplete && __instance.Parent.Select((int)__instance.TargetPlayerId) && !MeetingHud.Instance.DidVote(PlayerControl.LocalPlayer.PlayerId))
                     {
-                        //DillyzLegacyPackMain.Instance.Log.LogInfo("hey wait " + (DictateButton == null) + " or " + (DictateButton.gameObject == null) + " or " + (DictateSpr == null) + " but " + DictateButton.transform.parent.parent.gameObject.name);
-                        DictateButton.transform.parent.parent.position += new Vector3(0.1f, 0f, 0f);
                         __instance.Buttons.SetActive(true);
                         DictateSpr.enabled = true;
                         DictateButton.transform.Find("ControllerHighlight").gameObject.GetComponent<SpriteRenderer>().enabled = true;
