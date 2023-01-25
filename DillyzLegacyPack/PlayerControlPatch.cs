@@ -165,5 +165,14 @@ namespace DillyzLegacyPack
                 catch { }
             }
         }
+
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
+        class PlayerControlPatch_Die
+        {
+            public static void Postfix(PlayerControl __instance)
+            {
+                DillyzLegacyPackMain.phoenixLingeringEffect.Remove(__instance.PlayerId);
+            }
+        }
     }
 }
