@@ -32,9 +32,10 @@ namespace DillyzLegacyPack
                 if (dictatedVotes.Contains(voterPlayer.PlayerId)) {
                     for (int i = 0; i < DillyzLegacyPackMain.dictatingPower - 1; i++) {
                         SpriteRenderer spriteRenderer = UnityEngine.Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
-                        //if (GameManager.Instance.LogicOptions.GetAnonymousVotes())
-                        PlayerMaterial.SetColors(Palette.DisabledGrey, spriteRenderer);
-                        //  else  PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
+                        if (GameManager.Instance.LogicOptions.GetAnonymousVotes() || !DillyzLegacyPackMain.dictator.nameColorPublic)
+                            PlayerMaterial.SetColors(Palette.DisabledGrey, spriteRenderer);
+                        else  
+                            PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
                         spriteRenderer.transform.SetParent(parent);
                         spriteRenderer.transform.localScale = Vector3.zero;
                         __instance.StartCoroutine(Effects.Bloop((float)index * 0.3f, spriteRenderer.transform, 1f, 0.5f));
