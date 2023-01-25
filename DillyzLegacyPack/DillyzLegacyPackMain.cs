@@ -219,7 +219,7 @@ namespace DillyzLegacyPack
             // FLIPPING THEM BC YES
             ssreveal = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.reveal2.png");
             sshide = DillyzUtil.getSprite(assembly, "DillyzLegacyPack.Assets.hide.png");
-            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.hide.png", 3f, false, new string[] { "Sensei" }, empty,
+            sword = DillyzUtil.addButton(assembly, "Sensei Sword", "DillyzLegacyPack.Assets.hide.png", 22.5f, false, new string[] { "Sensei" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
@@ -407,6 +407,10 @@ namespace DillyzLegacyPack
             phoenix.AddAdvancedSetting_String("Comm. Disabled On", communicateDisables, new string[] { "Revive Any", "Revive Impostor", "Revive Crewmate", "Revive Other", "None"}, delegate(string v) { communicateDisables = v; });
             phoenix.AddAdvancedSetting_Float("Reveal Cooldown", 60, 10, 115, 5, delegate(float v) { revealbutton.cooldown = v; }).suffix = "s";
             phoenix.AddAdvancedSetting_Float("Reveal Timer", 10, 5, 40, 2.5f, delegate (float v) { revealbutton.useTime = v; }).suffix = "s";
+
+            // -- Sensei --
+            sensei.AddAdvancedSetting_Float("Katana Cooldown", 22.5f, 5f, 45f, 2.5f, delegate (float v) { sword.cooldown = v; }).suffix = "s";
+            sensei.AddAdvancedSetting_Float("Katana Timer", 15f, 5f, 45f, 2.5f, delegate (float v) { sword.useTime = v; }).suffix = "s";
 
             // -- TiMEpostor --
             timepostor.AddAdvancedSetting_Boolean("Time Freezing", true, delegate (bool v) { freezetime.allowedRoles.Clear(); if (v) freezetime.allowedRoles.Add(timepostor.name); });
