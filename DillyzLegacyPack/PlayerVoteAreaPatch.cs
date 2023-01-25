@@ -22,14 +22,19 @@ namespace DillyzLegacyPack
 
         [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.Start))]
         class PlayerVoteAreaPatch_Start {
-            public static void Postfix(PlayerVoteArea __instance) {
+            public static void Postfix(PlayerVoteArea __instance)
+            {
+                if (__instance.TargetPlayerId == 253)
+                    DillyzLegacyPackMain.Instance.Log.LogInfo("Skipping gets a button.");
+                else
+                    DillyzLegacyPackMain.Instance.Log.LogInfo(DillyzUtil.findPlayerControl(__instance.TargetPlayerId).name + " gets a button.");
                 UiElement DictateButton = GameObject.Instantiate(__instance.ConfirmButton);
                 SpriteRenderer DictateSpr = DictateButton.gameObject.GetComponent<SpriteRenderer>();
                 DictateSpr.sprite = DillyzUtil.getSprite(DillyzLegacyPackMain.assembly, "DillyzLegacyPack.Assets.dictate.png");
-                DictateSpr.enabled = false;
+                DictateSpr.enabled = true;
                 DictateButton.name = "DictateButton";
                 DictateButton.transform.parent = __instance.Buttons.transform;
-                DictateButton.transform.localPosition = new Vector3(100f, 0f, 0f);
+                DictateButton.transform.localPosition = new Vector3(0f, 0f, 0f);
                 DictateButton.transform.Find("ControllerHighlight").gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 175f/255f, 30f/255f, 1f);
                 DictateButton.transform.Find("ControllerHighlight").gameObject.GetComponent<SpriteRenderer>().enabled = false;
 
@@ -87,8 +92,16 @@ namespace DillyzLegacyPack
                         return false;
                     if (!__instance.Parent)
                         return false;
+
+                    if (__instance.TargetPlayerId == 253)
+                        DillyzLegacyPackMain.Instance.Log.LogInfo("Skipping highlighted.");
+                    else
+                        DillyzLegacyPackMain.Instance.Log.LogInfo(DillyzUtil.findPlayerControl(__instance.TargetPlayerId).name + " highlighted.");
+
                     if (!__instance.voteComplete && __instance.Parent.Select((int)__instance.TargetPlayerId) && !MeetingHud.Instance.DidVote(PlayerControl.LocalPlayer.PlayerId))
                     {
+                        //DillyzLegacyPackMain.Instance.Log.LogInfo("hey wait " + (DictateButton == null) + " or " + (DictateButton.gameObject == null) + " or " + (DictateSpr == null) + " but " + DictateButton.transform.parent.parent.gameObject.name);
+                        DictateButton.transform.parent.parent.position += new Vector3(0.1f, 0f, 0f);
                         __instance.Buttons.SetActive(true);
                         DictateSpr.enabled = true;
                         DictateButton.transform.Find("ControllerHighlight").gameObject.GetComponent<SpriteRenderer>().enabled = true;
@@ -106,7 +119,7 @@ namespace DillyzLegacyPack
                             }),
                             Effects.Lerp(0.45f, (Il2CppSystem.Action<float>)delegate(float t)
                             {
-                                DictateButton.transform.localPosition = Vector2.Lerp(Vector2.right * startPos, Vector2.right * 0f, Effects.ExpOut(t));
+                                DictateButton.transform.localPosition = Vector2.Lerp(Vector2.right * startPos, Vector2.zero, Effects.ExpOut(t));
                             })
                         }));
                         List<UiElement> selectableElements = new List<UiElement>();
