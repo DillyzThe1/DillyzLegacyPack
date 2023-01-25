@@ -76,6 +76,7 @@ namespace DillyzLegacyPack
             CustomRole phoenix = DillyzUtil.createRole("Phoenix", "Reveal your hidden power.", true, false, new Color32(225, 65, 25, 255), false,
                 CustomRoleSide.Crewmate, VentPrivilege.None, false, true);
             phoenix.a_or_an = "a";
+            phoenix.blurb = "The Phoenix is a role which helps the crewmates in the afterlife.\nOnce they're dead, they can revive with a second chance and try to kill someone or revive an unknown nearby ghost.\nThe Phoenix may try to reveal themselves, however, all abilities have a use limit.\n\ngithub.com/DillyzThe1";
             phoenix.SetSprite(assembly, "DillyzLegacyPack.Assets.phoenix.png");
             phoenix.roletoGhostInto = "Phoenix's Ghost";
 
@@ -213,6 +214,7 @@ namespace DillyzLegacyPack
             CustomRole sensei = DillyzUtil.createRole("Sensei", "Slice through suspects to victory.", true, false, new Color32(125, 45, 200, 255), false,
                 CustomRoleSide.Crewmate, VentPrivilege.None, false, true);
             sensei.a_or_an = "a";
+            sensei.blurb = "The Sensei is a role in which may splice through suspects with a katana to attempt murdering the impostor.\n\ngithub.com/DillyzThe1";
             sensei.SetSprite(assembly, "DillyzLegacyPack.Assets.sensei.png");
 
 
@@ -257,6 +259,7 @@ namespace DillyzLegacyPack
             CustomRole timepostor = DillyzUtil.createRole("TiMEpostor", "Manipulate the time line.", true, false, new Color32(85, 50, 225, 255), true,
                 CustomRoleSide.Impostor, VentPrivilege.Impostor, true, true);
             timepostor.a_or_an = "a";
+            timepostor.blurb = "The TiMEpostor is a role in which is a total time god of the ship.\nThis role is an evolution of an impostor that has expanded to the abilities to temporarily freeze time and reverse it at will.\nThe catch? They have a massive cooldown!\n\ngithub.com/DillyzThe1";
             timepostor.SetSprite(assembly, "DillyzLegacyPack.Assets.timepostor.png");
 
             freezetime = DillyzUtil.addButton(assembly, "Freeze Time", "DillyzLegacyPack.Assets.freeze.png", 35f, false, new string[] { "TiMEpostor" }, empty,
@@ -315,6 +318,7 @@ namespace DillyzLegacyPack
             dictator = DillyzUtil.createRole("Dictator", "Dictate the crew's votes.", true, false, new Color32(255, 100, 50, 255), false, CustomRoleSide.Crewmate,
                                                                                                                                         VentPrivilege.None, false, true);
             dictator.a_or_an = "a";
+            dictator.blurb = "The Dictator is a role in which may literally dictate a set amount of votes, only decreasing if dictation is actually used.\nAn extra button will be shown on the meeting hud.\n\ngithub.com/DillyzThe1";
             dictator.SetSprite(assembly, "DillyzLegacyPack.Assets.dictator.png");
             #endregion
 
