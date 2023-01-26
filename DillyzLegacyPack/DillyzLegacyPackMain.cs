@@ -14,7 +14,7 @@ namespace DillyzLegacyPack
     [BepInDependency("com.github.dillyzthe1.dillyzroleapi")]
     class DillyzLegacyPackMain : BasePlugin
     {
-        public const string MOD_NAME = "DillyzLegacyPack", MOD_ID = "com.github.dillyzthe1.dillyzroleapi.packages.legacy", MOD_VERSION = "0.1.0-dev";
+        public const string MOD_NAME = "DillyzLegacyPack", MOD_ID = "com.github.dillyzthe1.dillyzroleapi.packages.legacy", MOD_VERSION = "1.0.0";
         public static Harmony harmony = new Harmony(DillyzLegacyPackMain.MOD_ID);
 
         public static DillyzLegacyPackMain Instance;
