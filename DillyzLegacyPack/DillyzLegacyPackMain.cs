@@ -269,7 +269,7 @@ namespace DillyzLegacyPack
                 }
             });
 
-            reversetime = DillyzUtil.addButton(assembly, "Reverse Time", "DillyzLegacyPack.Assets.reverse.png", 4f, false, new string[] { "TiMEpostor" }, empty,
+            reversetime = DillyzUtil.addButton(assembly, "Reverse Time", "DillyzLegacyPack.Assets.reverse.png", 40f, false, new string[] { "TiMEpostor" }, empty,
                 delegate (KillButtonCustomData button, bool success)
                 {
                     if (!success)
