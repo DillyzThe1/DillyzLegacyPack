@@ -323,8 +323,8 @@ namespace DillyzLegacyPack
             });
             DillyzUtil.AddRpcCall("time_freeze", delegate(MessageReader reader) {
                 bool active = reader.ReadBoolean();
-                FreezeTime(active);
                 reversingTime = false;
+                FreezeTime(active);
 
                 if (DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "TiMEpostor" && freezetime.GameInstance != null)
                 {
@@ -338,8 +338,8 @@ namespace DillyzLegacyPack
             });
             DillyzUtil.AddRpcCall("time_reverse", delegate (MessageReader reader) {
                 bool active = reader.ReadBoolean();
-                FreezeTime(active);
                 reversingTime = active;
+                FreezeTime(active);
                 timeReversedOn = DateTime.UtcNow;
 
                 if (DillyzUtil.getRoleName(PlayerControl.LocalPlayer) == "TiMEpostor" && freezetime.GameInstance != null)
