@@ -1,6 +1,7 @@
 ﻿using DillyzRoleApi_Rewritten;
 using HarmonyLib;
 using InnerNet;
+using System;
 using UnityEngine;
 
 namespace DillyzLegacyPack
@@ -9,23 +10,27 @@ namespace DillyzLegacyPack
     {
         public static void resetstuffs()
         {
-            DillyzLegacyPackMain.swordsOut.Clear();
-            DillyzLegacyPackMain.namesPublic.Clear();
-            DillyzLegacyPackMain.timeFrozen = false;
-            DillyzLegacyPackMain.causedTimeEvent = false;
-            DillyzLegacyPackMain.reversingTime = false;
-            DillyzLegacyPackMain.dictationsDone = 0;
-            DillyzLegacyPackMain.phoenixLingeringEffect.Clear();
+            try
+            {
+                DillyzLegacyPackMain.swordsOut.Clear();
+                DillyzLegacyPackMain.namesPublic.Clear();
+                DillyzLegacyPackMain.timeFrozen = false;
+                DillyzLegacyPackMain.causedTimeEvent = false;
+                DillyzLegacyPackMain.reversingTime = false;
+                DillyzLegacyPackMain.dictationsDone = 0;
+                DillyzLegacyPackMain.phoenixLingeringEffect.Clear();
 
-            if (DillyzLegacyPackMain.wrath.GameInstance != null)
-                DillyzLegacyPackMain.wrath.GameInstance.blockingButton = DillyzLegacyPackMain.wrath.GameInstance.showIconOnBlocked = false;
-            if (DillyzLegacyPackMain.revealbutton.GameInstance != null)
-                DillyzLegacyPackMain.revealbutton.GameInstance.blockingButton = DillyzLegacyPackMain.revealbutton.GameInstance.showIconOnBlocked = false;
-            if (DillyzLegacyPackMain.communicate.GameInstance != null)
-                DillyzLegacyPackMain.communicate.GameInstance.blockingButton = DillyzLegacyPackMain.communicate.GameInstance.showIconOnBlocked = false;
+                if (DillyzLegacyPackMain.wrath.GameInstance != null)
+                    DillyzLegacyPackMain.wrath.GameInstance.blockingButton = DillyzLegacyPackMain.wrath.GameInstance.showIconOnBlocked = false;
+                if (DillyzLegacyPackMain.revealbutton.GameInstance != null)
+                    DillyzLegacyPackMain.revealbutton.GameInstance.blockingButton = DillyzLegacyPackMain.revealbutton.GameInstance.showIconOnBlocked = false;
+                if (DillyzLegacyPackMain.communicate.GameInstance != null)
+                    DillyzLegacyPackMain.communicate.GameInstance.blockingButton = DillyzLegacyPackMain.communicate.GameInstance.showIconOnBlocked = false;
 
-            if (ShipStatusPatch.frozenOverlay != null && ShipStatusPatch.frozenOverlay.gameObject != null && ShipStatusPatch.frozenOverlay.sprrend != null)
-                ShipStatusPatch.frozenOverlay.SetStaticColor(new Color(1f, 1f, 1f, 0f));
+                if (ShipStatusPatch.frozenOverlay != null && ShipStatusPatch.frozenOverlay.gameObject != null && ShipStatusPatch.frozenOverlay.sprrend != null)
+                    ShipStatusPatch.frozenOverlay.SetStaticColor(new Color(1f, 1f, 1f, 0f));
+            }
+            catch (Exception e) { }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnGameEnd))]
         class PlayerControlPatch_OnEndGame
