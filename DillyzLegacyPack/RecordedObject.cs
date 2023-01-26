@@ -1,5 +1,6 @@
 ﻿using AmongUs.GameOptions;
 using DillyzRoleApi_Rewritten;
+using PowerTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,7 +117,7 @@ namespace DillyzLegacyPack
                     DillyzLegacyPackMain.Instance.Log.LogInfo(storedTime.role + " is a" + (beimp ? "n Impostor" : " Crewmate") + " role.");
                     DillyzUtil.RpcSetRole(this.pc, storedTime.role);
                 }
-                if (this.pc.Data.IsDead != storedTime.isDead)
+                if (this.pc.Data.IsDead != storedTime.isDead && !DillyzLegacyPackMain.lastKilledByTiMEpostor.Contains(this.pc.PlayerId))
                 {
                     if (storedTime.isDead)
                     {
@@ -143,6 +144,12 @@ namespace DillyzLegacyPack
                         CustomRole.setRoleName(this.pc.PlayerId, storedTime.role);
                     }
                 }
+
+                SpriteAnim animtorrrr = this.pc.GetComponent<PlayerPhysics>().Animations.Animator;
+                if (storedTime.clip != null && animtorrrr.m_currAnim.name != storedTime.clip.name)
+                    animtorrrr.Play(storedTime.clip);
+                if (this.pc.cosmetics.skin != null && storedTime.clip_skin != null && this.pc.cosmetics.skin.animator.m_currAnim.name != storedTime.clip_skin.name)
+                    this.pc.cosmetics.skin.animator.Play(storedTime.clip_skin);
             }
         }
     }
@@ -158,6 +165,8 @@ namespace DillyzLegacyPack
         public bool inVent = false;
         public string role = "";
         public bool isDead = false;
+        public AnimationClip clip = null;
+        public AnimationClip clip_skin = null;
 
         public TimeStore(Vector3 position, Quaternion rotation, Vector2 velocity, bool flipX, PlayerControl player)
         {
@@ -173,6 +182,9 @@ namespace DillyzLegacyPack
                 this.inVent = player.inVent;
                 this.role = DillyzUtil.getRoleName(player);
                 this.isDead = player.Data.IsDead;
+                this.clip = player.GetComponent<PlayerPhysics>().Animations.Animator.m_currAnim;
+                if (player.cosmetics.skin != null)
+                    this.clip_skin = player.cosmetics.skin.animator.m_currAnim;
             }
         }
     }

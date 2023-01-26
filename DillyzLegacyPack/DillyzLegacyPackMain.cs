@@ -35,6 +35,7 @@ namespace DillyzLegacyPack
         public static DateTime timeReversedOn = DateTime.MinValue;
         public static int dictationsDone = 0;
         public static List<byte> phoenixLingeringEffect = new List<byte>();
+        public static List<byte> lastKilledByTiMEpostor = new List<byte>();
 
 
         public static Sprite ssreveal;

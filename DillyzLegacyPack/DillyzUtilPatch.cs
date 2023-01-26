@@ -53,6 +53,9 @@ namespace DillyzLegacyPack
                         }
                         break;
                 }
+
+            if (DillyzUtil.getRoleName(assassinator) == "TiMEpostor")
+                DillyzLegacyPackMain.lastKilledByTiMEpostor.Add(target.PlayerId);
         }
     }
 }

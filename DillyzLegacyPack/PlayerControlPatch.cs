@@ -3,6 +3,7 @@ using HarmonyLib;
 using InnerNet;
 using System;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace DillyzLegacyPack
 {
@@ -70,6 +71,7 @@ namespace DillyzLegacyPack
         {
             public static void Postfix(PlayerControl __instance)
             {
+                DillyzLegacyPackMain.lastKilledByTiMEpostor.Remove(__instance.PlayerId);
                 if (AmongUsClient.Instance.AmHost && DillyzUtil.getRoleName(__instance) == "Phoenix's Ghost")
                     DillyzUtil.RpcSetRole(__instance, "Phoenix Zero");
             }
