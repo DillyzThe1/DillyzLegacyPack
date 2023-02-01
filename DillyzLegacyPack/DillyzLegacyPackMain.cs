@@ -469,7 +469,7 @@ namespace DillyzLegacyPack
             if (reversetime.GameInstance != null)
                 reversetime.GameInstance.blockingButton = timeFrozen;
 
-            if (!reversingTime)
+            if (!reversingTime && ShipStatusPatch.frozenOverlay != null)
                 ShipStatusPatch.frozenOverlay.FadeToColor(1.775f, new Color(1f, 1f, 1f, frozen ? 0.575f : 0f));
         }
     }
