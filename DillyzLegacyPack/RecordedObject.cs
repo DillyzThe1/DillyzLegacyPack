@@ -122,14 +122,17 @@ namespace DillyzLegacyPack
                     if (storedTime.isDead)
                     {
                         this.pc.Die(DeathReason.Kill, false);
-                        DeadBody deadBody = UnityEngine.Object.Instantiate(this.pc.KillAnimations[0].bodyPrefab);
-                        deadBody.enabled = true;
-                        deadBody.ParentId = this.pc.PlayerId;
-                        this.pc.SetPlayerMaterialColors(deadBody.bodyRenderer);
-                        this.pc.SetPlayerMaterialColors(deadBody.bloodSplatter);
-                        Vector3 vector = this.pc.transform.position + this.pc.KillAnimations[0].BodyOffset;
-                        vector.z = vector.y / 1000f;
-                        deadBody.transform.position = vector;
+                        if (!DillyzUtil.roleIsGhost(this.pc))
+                        {
+                            DeadBody deadBody = UnityEngine.Object.Instantiate(this.pc.KillAnimations[0].bodyPrefab);
+                            deadBody.enabled = true;
+                            deadBody.ParentId = this.pc.PlayerId;
+                            this.pc.SetPlayerMaterialColors(deadBody.bodyRenderer);
+                            this.pc.SetPlayerMaterialColors(deadBody.bloodSplatter);
+                            Vector3 vector = this.pc.transform.position + this.pc.KillAnimations[0].BodyOffset;
+                            vector.z = vector.y / 1000f;
+                            deadBody.transform.position = vector;
+                        }
                     }
                     else
                     {
